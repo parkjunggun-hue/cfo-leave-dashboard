@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>직원 근태·휴가 현황 (조회용)</title>
+<style>
+  :root{
+    --bg:#f5f6f9; --surface:#ffffff; --surface-2:#eef0f4; --border:#e0e3ea;
+    --text:#1b2130; --text-muted:#606b7d;
+    --accent:#2e5a86; --accent-soft:#e8f0f8;
+    --kh:#2e5a86; --kh-soft:#e8f0f8;
+    --jm:#1c7d54; --jm-soft:#e5f4ec;
+    --se:#a4650a; --se-soft:#fbf0dc;
+    --danger:#b23b3b; --danger-soft:#fbe6e6;
+    --ok:#1c7d54;
+    --shadow:0 1px 2px rgba(20,25,40,.04),0 6px 20px rgba(20,25,40,.05);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#12151c; --surface:#1a1e27; --surface-2:#20242e; --border:#2b3140;
+      --text:#e7eaf1; --text-muted:#98a1b3;
+      --accent:#7aa8d6; --accent-soft:#1c2c3c;
+      --kh:#7aa8d6; --kh-soft:#1c2c3c;
+      --jm:#52bf8c; --jm-soft:#15302a;
+      --se:#e2a94a; --se-soft:#382b13;
+      --danger:#e5807f; --danger-soft:#3a1f20;
+      --ok:#52bf8c;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 24px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12151c; --surface:#1a1e27; --surface-2:#20242e; --border:#2b3140;
+    --text:#e7eaf1; --text-muted:#98a1b3;
+    --accent:#7aa8d6; --accent-soft:#1c2c3c;
+    --kh:#7aa8d6; --kh-soft:#1c2c3c;
+    --jm:#52bf8c; --jm-soft:#15302a;
+    --se:#e2a94a; --se-soft:#382b13;
+    --danger:#e5807f; --danger-soft:#3a1f20;
+    --ok:#52bf8c;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 24px rgba(0,0,0,.35);
+  }
+  :root[data-theme="light"]{
+    --bg:#f5f6f9; --surface:#ffffff; --surface-2:#eef0f4; --border:#e0e3ea;
+    --text:#1b2130; --text-muted:#606b7d;
+    --accent:#2e5a86; --accent-soft:#e8f0f8;
+    --kh:#2e5a86; --kh-soft:#e8f0f8;
+    --jm:#1c7d54; --jm-soft:#e5f4ec;
+    --se:#a4650a; --se-soft:#fbf0dc;
+    --danger:#b23b3b; --danger-soft:#fbe6e6;
+    --ok:#1c7d54;
+    --shadow:0 1px 2px rgba(20,25,40,.04),0 6px 20px rgba(20,25,40,.05);
+  }
+  *{box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,"Segoe UI","Pretendard","Noto Sans KR","Malgun Gothic","PingFang SC","Microsoft YaHei",sans-serif;line-height:1.5;padding:28px 20px 60px;}
+  .page{max-width:1100px;margin:0 auto;}
+  header.top{margin-bottom:18px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;}
+  .eyebrow{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:6px;}
+  h1{font-size:23px;font-weight:800;margin:0 0 4px;letter-spacing:-.01em;}
+  .sub{color:var(--text-muted);font-size:13.5px;}
+  .snapshot{
+    background:var(--surface);border:1px solid var(--border);border-radius:9px;
+    padding:9px 14px;font-size:12px;color:var(--text-muted);white-space:nowrap;box-shadow:var(--shadow);
+  }
+  .snapshot b{color:var(--accent);}
+  .viewonly{
+    display:inline-flex;align-items:center;gap:5px;background:var(--accent-soft);color:var(--accent);
+    font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;margin-bottom:6px;
+  }
+
+  .tabs{display:flex;gap:6px;margin:18px 0 20px;border-bottom:1px solid var(--border);}
+  .tab{padding:9px 16px;font-size:13.5px;font-weight:700;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;user-select:none;}
+  .tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+  .tab:hover{color:var(--text);}
+
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;}
+  .stat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;box-shadow:var(--shadow);}
+  .stat .n{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em;}
+  .stat .l{font-size:11.5px;color:var(--text-muted);margin-top:2px;}
+
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px;}
+  .card-head{padding:12px 16px;border-bottom:1px solid var(--border);background:var(--surface-2);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+  .card-head h2{font-size:14px;font-weight:800;margin:0;}
+  .filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  select,input[type=text]{
+    font:inherit;font-size:12.5px;background:var(--surface);color:var(--text);
+    border:1px solid var(--border);border-radius:7px;padding:6px 9px;
+  }
+  select:focus,input:focus{outline:2px solid var(--accent);outline-offset:1px;}
+
+  table{width:100%;border-collapse:collapse;font-size:12.8px;}
+  thead th{text-align:left;font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:.03em;padding:8px 10px;border-bottom:1px solid var(--border);white-space:nowrap;cursor:pointer;}
+  thead th:hover{color:var(--accent);}
+  tbody td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:middle;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:var(--surface-2);}
+  .tablewrap{overflow-x:auto;}
+
+  .pill{display:inline-flex;align-items:center;gap:5px;padding:2.5px 8px;border-radius:999px;font-size:11.5px;font-weight:700;white-space:nowrap;}
+  .pill.kh{background:var(--kh-soft);color:var(--kh);}
+  .pill.jm{background:var(--jm-soft);color:var(--jm);}
+  .pill.se{background:var(--se-soft);color:var(--se);}
+  .pill.plan{background:transparent;border:1px dashed var(--text-muted);color:var(--text-muted);}
+  .pill.conf{background:var(--accent-soft);color:var(--accent);}
+
+  .remain-pos{color:var(--ok);font-weight:700;}
+  .remain-neg{color:var(--danger);font-weight:700;}
+  .remain-blank{color:var(--text-muted);}
+
+  /* calendar */
+  .cal-nav{display:flex;align-items:center;gap:10px;}
+  .cal-nav button{background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:5px 11px;font-size:13px;cursor:pointer;color:var(--text);}
+  .cal-nav button:hover{border-color:var(--accent);color:var(--accent);}
+  .cal-label{font-weight:800;font-size:14px;min-width:88px;text-align:center;}
+  .cal-wrap{overflow-x:auto;padding:16px;}
+  .cal{display:grid;grid-template-columns:repeat(7,minmax(104px,1fr));gap:7px;min-width:760px;}
+  .cal .dow{font-size:10.5px;font-weight:700;color:var(--text-muted);text-align:center;padding-bottom:2px;text-transform:uppercase;}
+  .cal .cell{background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:6px;min-height:74px;}
+  .cal .cell.empty{background:transparent;border:none;}
+  .cal .cell .dnum{font-size:11.5px;font-weight:800;color:var(--text-muted);font-variant-numeric:tabular-nums;margin-bottom:3px;}
+  .cal .chip{display:block;font-size:10.5px;padding:2px 6px;border-radius:5px;margin-bottom:3px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .cal .chip.kh{background:var(--kh-soft);color:var(--kh);}
+  .cal .chip.jm{background:var(--jm-soft);color:var(--jm);}
+  .cal .chip.se{background:var(--se-soft);color:var(--se);}
+  .cal .chip.plan{border:1px dashed currentColor;background:transparent;}
+  .cal .more{font-size:10px;color:var(--text-muted);}
+
+  footer{margin-top:24px;font-size:11.5px;color:var(--text-muted);}
+  .empty-msg{padding:24px;text-align:center;color:var(--text-muted);font-size:13px;}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <header class="top">
+    <div>
+      <div class="viewonly">● 조회 전용</div>
+      <div class="eyebrow">CFO室 근태 · 휴가 현황</div>
+      <h1>직원 근태·휴가 누적관리</h1>
+      <div class="sub">전체 인원의 연차·휴가·병가·사가 사용 현황을 확인하는 조회 화면입니다. 신규 기록 등록·수정은 담당자에게 요청해 주세요.</div>
+    </div>
+    <div class="snapshot">최종 업데이트<br/><b>2026-07-17</b> 기준</div>
+  </header>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="dash">대시보드</div>
+    <div class="tab" data-tab="cal">캘린더</div>
+    <div class="tab" data-tab="log">전체기록</div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="panel active" id="panel-dash">
+    <div class="stats" id="statTiles"></div>
+    <div class="card">
+      <div class="card-head"><h2>직원별 누적 현황</h2></div>
+      <div class="tablewrap">
+        <table id="dashTable">
+          <thead>
+            <tr>
+              <th data-sort="team">팀</th><th data-sort="name">성명</th>
+              <th data-sort="연차">연차</th><th data-sort="휴가">휴가</th><th data-sort="병가">병가</th><th data-sort="사가">사가</th>
+              <th data-sort="total">합계</th><th>부여일수</th><th>잔여</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- CALENDAR -->
+  <div class="panel" id="panel-cal">
+    <div class="card">
+      <div class="card-head">
+        <h2>월간 캘린더</h2>
+        <div class="cal-nav">
+          <button id="calPrev">◀</button>
+          <div class="cal-label" id="calLabel"></div>
+          <button id="calNext">▶</button>
+        </div>
+      </div>
+      <div class="cal-wrap"><div class="cal" id="calGrid"></div></div>
+    </div>
+  </div>
+
+  <!-- LOG -->
+  <div class="panel" id="panel-log">
+    <div class="card">
+      <div class="card-head">
+        <h2>전체 기록</h2>
+        <div class="filters">
+          <input type="text" id="fSearch" placeholder="성명 검색"/>
+          <select id="fTeam"><option value="">전체 팀</option><option>회계</option><option>자금</option><option>세무</option></select>
+          <select id="fType"><option value="">전체 유형</option><option>연차</option><option>휴가</option><option>병가</option><option>사가</option><option>외근</option><option>교육</option><option>인사이동</option></select>
+          <select id="fStatus"><option value="">전체 상태</option><option>확정(실적)</option><option>계획(예정)</option></select>
+          <select id="fMonth"><option value="">전체 월</option><option value="03">3월</option><option value="04">4월</option><option value="05">5월</option><option value="06">6월</option><option value="07">7월</option></select>
+        </div>
+      </div>
+      <div class="tablewrap">
+        <table id="logTable">
+          <thead>
+            <tr>
+              <th data-sort="team">팀</th><th data-sort="name">성명</th><th data-sort="start">기간</th>
+              <th>구분</th><th>유형</th><th>상태</th><th data-sort="days">일수</th><th>원본비고</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <footer>출처: CFO室周间计划_260710.xlsx (16개 주간 시트 전수 추출) · 이 화면은 조회 전용 스냅샷입니다. 새로운 근태·휴가 기록이나 연차부여일수 반영이 필요하면 담당자에게 갱신을 요청해 주세요.</footer>
+</div>
+
+<script>
+(function(){
+  var BASE = [["회계","陈燕","2026-07-08","2026-07-10","전일","휴가","확정(실적)","7.8~7.10 陈燕休假"],["회계","刘德芬","2026-07-08","2026-07-08","전일","휴가","확정(실적)","7.8 刘德芬休假"],["회계","黄凌君","2026-07-08","2026-07-08","오전반차","휴가","확정(실적)","7.8上午/7.10 黄凌君休假"],["회계","黄凌君","2026-07-10","2026-07-10","전일","휴가","확정(실적)","7.8上午/7.10 黄凌君休假"],["회계","李春红","2026-07-10","2026-07-10","오후반차","휴가","확정(실적)","7.10下午李春红休假"],["자금","王秋萍","2026-07-07","2026-07-07","오후반차","병가","확정(실적)","7/7 王秋萍下午病假"],["세무","金婷婷","2026-07-07","2026-07-07","오전반차","병가","확정(실적)","7/7 上午 金婷婷病假"],["회계","张磊","2026-07-03","2026-07-03","전일","휴가","확정(실적)","7.3 张磊休假"],["회계","张琼","2026-06-30","2026-06-30","전일","휴가","확정(실적)","6.30 张琼休假"],["회계","乔莉","2026-06-22","2026-06-24","전일","휴가","확정(실적)","6.22~6.24 乔莉休假"],["회계","黄凌君","2026-06-22","2026-06-22","전일","휴가","확정(실적)","6.22 黄凌君休假"],["회계","柏忠雪","2026-06-22","2026-06-22","전일","휴가","확정(실적)","6.22 柏忠雪休假"],["회계","李春红","2026-06-24","2026-06-24","전일","휴가","확정(실적)","6.24 李春红休假"],["회계","黄凌君","2026-06-26","2026-06-26","전일","휴가","확정(실적)","6.26 黄凌君休假"],["회계","陈燕","2026-06-25","2026-06-25","전일","휴가","확정(실적)","6.25 陈燕休假"],["회계","刘德芬","2026-06-25","2026-06-25","전일","휴가","확정(실적)","6.25 刘德芬休假"],["자금","姚钽","2026-06-25","2026-06-25","전일","휴가","확정(실적)","6/25 姚钽休假"],["세무","陈扬","2026-06-22","2026-06-26","전일","휴가","확정(실적)","6/22-26 陈扬休假"],["세무","徐梦娇","2026-06-23","2026-06-23","전일","휴가","확정(실적)","6/23 徐梦娇休假"],["회계","陈燕","2026-06-08","2026-06-18","전일","휴가","확정(실적)","6.8~6.18 陈燕休假"],["회계","黄凌君","2026-06-17","2026-06-17","전일","휴가","확정(실적)","6.17 黄凌君休假"],["회계","叶寒露","2026-06-18","2026-06-18","전일","휴가","확정(실적)","6.18 叶寒露休假"],["회계","刘小红","2026-06-18","2026-06-18","오후반차","휴가","확정(실적)","6.18下午 刘小红休假"],["자금","王秋萍","2026-06-15","2026-06-18","전일","휴가","확정(실적)","6/15-6/18 王秋萍休假"],["자금","姚钽","2026-06-16","2026-06-16","전일","휴가","확정(실적)","6/16 姚钽休假"],["세무","陈扬","2026-06-15","2026-06-15","전일","휴가","확정(실적)","6/15.16.18 陈扬休假"],["세무","陈扬","2026-06-16","2026-06-16","전일","휴가","확정(실적)","6/15.16.18 陈扬休假"],["세무","陈扬","2026-06-18","2026-06-18","전일","휴가","확정(실적)","6/15.16.18 陈扬休假"],["세무","余静","2026-06-15","2026-06-16","전일","휴가","확정(실적)","6/15-16 余静休假"],["세무","金婷婷","2026-06-16","2026-06-16","전일","휴가","확정(실적)","6/16 金婷婷休假"],["세무","杨玲","2026-06-16","2026-06-16","전일","병가","확정(실적)","6/16 杨玲病假"],["세무","高迎宾","2026-06-18","2026-06-18","오후반차","외근","확정(실적)","6/18 下午 高迎宾外勤"],["회계","叶寒露","2026-06-08","2026-06-08","전일","휴가","확정(실적)","6.8 叶寒露休假"],["회계","柏忠雪","2026-06-08","2026-06-08","오전반차","휴가","확정(실적)","6.8上午 柏忠雪休假"],["회계","李春红","2026-06-09","2026-06-09","전일","휴가","확정(실적)","6.9 李春红休假"],["회계","刘德芬","2026-06-12","2026-06-12","오후반차","휴가","확정(실적)","6.12下午 刘德芬休假"],["자금","姚钽","2026-06-08","2026-06-10","전일","휴가","확정(실적)","6/8-6/10 姚钽休假"],["세무","陈扬","2026-06-10","2026-06-12","전일","휴가","확정(실적)","6/10-12 陈扬休假"],["세무","杨玲","2026-06-12","2026-06-12","오후반차","휴가","확정(실적)","6/12 下午 杨玲休假"],["세무","高迎宾","2026-06-11","2026-06-11","오전반차","외근","확정(실적)","6/11 上午 高迎宾外勤"],["회계","黄凌君","2026-06-03","2026-06-03","오전반차","휴가","확정(실적)","6.3 上午黄凌君休假"],["회계","张磊","2026-06-05","2026-06-05","전일","휴가","확정(실적)","6.5 张磊休假"],["자금","姚钽","2026-06-01","2026-06-05","전일","휴가","확정(실적)","6/1-6/5 姚钽休假"],["세무","陈扬","2026-06-03","2026-06-04","전일","휴가","확정(실적)","6/3-4 陈扬休假"],["세무","金婷婷","2026-06-02","2026-06-02","오전반차","휴가","확정(실적)","6/2 金婷婷上午休假"],["회계","方梦怡","2026-05-29","2026-05-29","전일","인사이동","확정(실적)","方梦怡 이직수속 완료"],["회계","崔婧","2026-05-29","2026-05-29","전일","인사이동","확정(실적)","崔婧 이직수속 완료"],["회계","刘小红","2026-05-26","2026-05-26","전일","병가","확정(실적)","5.26 刘小红病假"],["회계","乔莉","2026-05-27","2026-05-27","전일","휴가","확정(실적)","5.27 乔莉休假"],["자금","汤奕华","2026-05-27","2026-05-27","전일","휴가","확정(실적)","5/27 汤奕华休假"],["자금","姚钽","2026-05-29","2026-05-29","전일","휴가","확정(실적)","5/29 姚钽休假"],["세무","陈扬","2026-05-27","2026-05-28","전일","휴가","확정(실적)","5/27-28 陈扬休假"],["세무","杨玲","2026-05-28","2026-05-28","전일","휴가","확정(실적)","5/28 杨玲休假"],["회계","陈燕","2026-05-20","2026-05-22","전일","휴가","확정(실적)","5.20~5.22 陈燕休假"],["회계","李春红","2026-05-19","2026-05-19","전일","휴가","확정(실적)","5.19 李春红休假"],["회계","刘德芬","2026-05-20","2026-05-20","전일","휴가","확정(실적)","5.20 刘德芬休假"],["회계","黄凌君","2026-05-20","2026-05-20","전일","휴가","확정(실적)","5.20 黄凌君休假"],["회계","汤晓婷","2026-05-20","2026-05-20","오후반차","휴가","확정(실적)","5.20下午 汤晓婷休假"],["회계","张琼","2026-05-18","2026-05-19","전일","병가","확정(실적)","5.18~5.19 张琼病假"],["자금","姚钽","2026-05-21","2026-05-21","전일","휴가","확정(실적)","5/21 姚钽休假"],["세무","陈扬","2026-05-20","2026-05-21","전일","휴가","확정(실적)","5/20-21 陈扬休假"],["세무","余静","2026-05-20","2026-05-20","전일","휴가","확정(실적)","5/20 余静休假"],["세무","金婷婷","2026-05-20","2026-05-20","오후반차","휴가","확정(실적)","5/20下午 金婷婷休假"],["세무","金婷婷","2026-05-21","2026-05-21","오전반차","휴가","확정(실적)","5/21上午 金婷婷休假"],["회계","张磊","2026-05-13","2026-05-15","전일","휴가","확정(실적)","5.13~5.15 张磊休假"],["회계","刘德芬","2026-05-15","2026-05-15","전일","휴가","확정(실적)","5.15 刘德芬休假"],["회계","张琼","2026-05-11","2026-05-13","전일","병가","확정(실적)","5.11~5.13 张琼病假"],["자금","汤奕华","2026-05-12","2026-05-12","전일","휴가","확정(실적)","5/12 汤奕华休假"],["자금","汤奕华","2026-05-13","2026-05-13","오후반차","병가","확정(실적)","5/13 汤奕华病假半天"],["세무","陈扬","2026-05-13","2026-05-14","전일","휴가","확정(실적)","5/13-14 陈扬休假"],["세무","高迎宾","2026-05-15","2026-05-15","전일","휴가","확정(실적)","5/15 高迎宾休假"],["회계","王慧明","2026-05-09","2026-05-09","전일","휴가","확정(실적)","5.9 王慧明休假"],["회계","黄凌君","2026-05-09","2026-05-09","전일","휴가","확정(실적)","5.9 黄凌君休假"],["회계","汤晓婷","2026-05-09","2026-05-09","전일","휴가","확정(실적)","5.9 汤晓婷休假"],["회계","张琼","2026-04-22","2026-04-30","전일","병가","확정(실적)","4.22~5.7 张琼病假(4월분)"],["회계","张琼","2026-05-01","2026-05-07","전일","병가","확정(실적)","4.22~5.7 张琼病假(5월분)"],["자금","王秋萍","2026-05-09","2026-05-09","전일","휴가","확정(실적)","5/9 王秋萍休假"],["세무","高迎宾","2026-05-07","2026-05-07","전일","휴가","확정(실적)","5/7 高迎宾休假"],["세무","金婷婷","2026-05-08","2026-05-08","오후반차","외근","확정(실적)","5/8 下午 金婷婷外部会议"],["세무","陈扬","2026-05-09","2026-05-09","전일","휴가","확정(실적)","5/9 陈扬休假"],["세무","杨玲","2026-05-09","2026-05-09","전일","휴가","확정(실적)","5/9 杨玲休假"],["회계","刘小红","2026-04-30","2026-04-30","전일","휴가","확정(실적)","4.30 刘小红休假"],["회계","方梦怡","2026-04-22","2026-04-22","오후반차","연차","확정(실적)","4.22下午~4.27 方梦怡年假"],["회계","方梦怡","2026-04-23","2026-04-27","전일","연차","확정(실적)","4.22下午~4.27 方梦怡年假"],["자금","付小玉","2026-04-30","2026-04-30","전일","휴가","확정(실적)","4/30 付小玉休假"],["세무","高迎宾","2026-04-27","2026-04-27","오전반차","휴가","확정(실적)","4/27上午高迎宾休假"],["세무","徐梦娇","2026-04-28","2026-04-28","전일","휴가","확정(실적)","4/28 徐梦娇休假"],["세무","陈扬","2026-04-28","2026-04-28","전일","휴가","확정(실적)","4/28 陈扬休假"],["세무","陈扬","2026-04-29","2026-04-29","전일","휴가","확정(실적)","4/29 陈扬休假"],["회계","汤晓婷","2026-04-21","2026-04-21","전일","휴가","확정(실적)","4.21汤晓婷休假"],["회계","乔莉","2026-04-23","2026-04-23","전일","휴가","확정(실적)","4.23~24上午 乔莉休假"],["회계","乔莉","2026-04-24","2026-04-24","오전반차","휴가","확정(실적)","4.23~24上午 乔莉休假"],["자금","王秋萍","2026-04-22","2026-04-22","전일","휴가","확정(실적)","4/22 王秋萍休假"],["자금","姚钽","2026-04-23","2026-04-23","전일","휴가","확정(실적)","4/23 姚钽休假"],["세무","高迎宾","2026-04-24","2026-04-24","오전반차","외근","확정(실적)","4/24 上午高迎宾外勤"],["회계","张琼","2026-04-14","2026-04-14","오전반차","병가","확정(실적)","4.14上午 张琼病假"],["회계","叶寒露","2026-04-15","2026-04-15","오후반차","병가","확정(실적)","4.15下午 叶寒露病假"],["회계","李春红","2026-04-16","2026-04-16","전일","병가","확정(실적)","4.16 李春红病假"],["회계","李春红","2026-04-17","2026-04-17","오후반차","병가","확정(실적)","4.17下午 李春红病假"],["세무","高迎宾","2026-04-15","2026-04-15","전일","연차","확정(실적)","4/15 高迎宾年假"],["세무","陈扬","2026-04-16","2026-04-16","전일","연차","확정(실적)","4/16 陈杨年假"],["세무","金婷婷","2026-04-17","2026-04-17","전일","연차","확정(실적)","4/17金婷婷年假"],["세무","杨玲","2026-04-16","2026-04-16","오후반차","병가","확정(실적)","4/16 下午 杨玲病假"],["회계","乔莉","2026-04-09","2026-04-09","전일","휴가","확정(실적)","4.9 乔莉休假"],["회계","叶寒露","2026-04-09","2026-04-09","전일","휴가","확정(실적)","4.9 叶寒露休假"],["회계","崔婧","2026-04-09","2026-04-09","전일","휴가","확정(실적)","4.9 崔婧休假"],["회계","方梦怡","2026-04-10","2026-04-10","전일","휴가","확정(실적)","4.10 方梦怡休假"],["회계","刘小红","2026-04-10","2026-04-10","전일","휴가","확정(실적)","4.10 刘小红休假"],["회계","张磊","2026-04-10","2026-04-10","오후반차","휴가","확정(실적)","4.10 下午张磊休假"],["회계","刘德芬","2026-04-10","2026-04-10","오후반차","휴가","확정(실적)","4.10 下午刘德芬休假"],["세무","金婷婷","2026-04-07","2026-04-07","오후반차","사가","확정(실적)","4/7下午 金婷婷事假"],["세무","金婷婷","2026-04-09","2026-04-09","전일","사가","확정(실적)","4/9全天 金婷婷事假"],["회계","陈燕","2026-04-01","2026-04-03","전일","병가","확정(실적)","陈燕 4.1~4.3 病假"],["회계","张琼","2026-04-02","2026-04-02","오후반차","병가","확정(실적)","张琼 4.2 下午病假"],["세무","金婷婷","2026-04-02","2026-04-02","오전반차","외근","확정(실적)","4/2上午 金婷婷闵行区税宣月启动仪式"],["세무","金婷婷","2026-04-03","2026-04-03","오전반차","사가","확정(실적)","4/3上午 金婷婷事假"],["회계","乔莉","2026-03-26","2026-03-26","전일","휴가","확정(실적)","乔莉 3.26 休假一天"],["회계","叶寒露","2026-03-26","2026-03-26","오후반차","휴가","확정(실적)","叶寒露 3.26 休假半天"],["회계","方梦怡","2026-03-27","2026-03-27","오후반차","휴가","확정(실적)","方梦怡 3.27 休假半天"],["세무","徐梦娇","2026-03-25","2026-03-25","오후반차","사가","확정(실적)","3/25下午 徐梦娇事假"],["회계","叶寒露","2026-07-13","2026-07-17","전일","휴가","계획(예정)","7.13~7.17 叶寒露休假(계획)"],["회계","张磊","2026-07-13","2026-07-13","오후반차","휴가","계획(예정)","7.13 下午 张磊休假(계획)"],["회계","张磊","2026-07-17","2026-07-17","오후반차","휴가","계획(예정)","7.17下午 张磊休假(계획)"],["회계","黄凌君","2026-07-15","2026-07-15","전일","휴가","계획(예정)","7.15 黄凌君休假(계획)"],["회계","汤晓婷","2026-07-17","2026-07-17","전일","휴가","계획(예정)","7.17 汤晓婷休假(계획)"],["세무","徐梦娇","2026-07-16","2026-07-16","전일","휴가","계획(예정)","7/16 徐梦娇休假(계획)"]];
+  var ENTITLEMENTS = {};
+
+  function baseRecords(){
+    return BASE.map(function(r,i){
+      return {id:'b'+i, team:r[0], name:r[1], start:r[2], end:r[3], half:r[4], type:r[5], status:r[6], note:r[7]};
+    });
+  }
+  var RECORDS = baseRecords();
+
+  function countCalendarDays(s,e){
+    var d0 = new Date(s+'T00:00:00'), d1 = new Date(e+'T00:00:00');
+    return Math.round((d1-d0)/86400000) + 1;
+  }
+  function computeDays(r){
+    if(r.type==='외근'||r.type==='교육'||r.type==='인사이동') return 0;
+    if(r.half!=='전일') return 0.5;
+    return countCalendarDays(r.start, r.end);
+  }
+  function teamClass(t){ return t==='회계'?'kh': t==='자금'?'jm': t==='세무'?'se':'kh'; }
+  function employeeList(){
+    var map = {};
+    RECORDS.forEach(function(r){ map[r.name] = r.team; });
+    return Object.keys(map).sort().map(function(n){ return {name:n, team:map[n]}; });
+  }
+
+  // ---------- TABS ----------
+  document.querySelectorAll('.tab').forEach(function(tab){
+    tab.addEventListener('click', function(){
+      document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      tab.classList.add('active');
+      document.getElementById('panel-'+tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  // ---------- DASHBOARD ----------
+  var dashSort = {key:'name', dir:'asc'};
+  function renderDashboard(){
+    var emps = employeeList();
+    var perEmp = {};
+    emps.forEach(function(e){ perEmp[e.name] = {team:e.team, 연차:0,휴가:0,병가:0,사가:0,total:0}; });
+    RECORDS.forEach(function(r){
+      var d = computeDays(r);
+      if(!perEmp[r.name]) return;
+      if(perEmp[r.name][r.type] !== undefined) perEmp[r.name][r.type] += d;
+      perEmp[r.name].total += d;
+    });
+    var rows = emps.map(function(e){
+      var p = perEmp[e.name];
+      return {name:e.name, team:e.team, 연차:p.연차, 휴가:p.휴가, 병가:p.병가, 사가:p.사가, total:p.total};
+    });
+    rows.sort(function(a,b){
+      var k = dashSort.key, dir = dashSort.dir==='asc'?1:-1;
+      if(a[k]<b[k]) return -1*dir; if(a[k]>b[k]) return 1*dir; return 0;
+    });
+
+    var totalUsed = rows.reduce(function(s,r){ return s+r.total; },0);
+    var confCount = RECORDS.filter(function(r){ return r.status==='확정(실적)'; }).length;
+    var planCount = RECORDS.filter(function(r){ return r.status==='계획(예정)'; }).length;
+    var shortCount = rows.filter(function(r){
+      var g = ENTITLEMENTS[r.name];
+      return g!==undefined && (g-r.total)<0;
+    }).length;
+
+    document.getElementById('statTiles').innerHTML =
+      stat(emps.length,'전체 인원') +
+      stat(totalUsed.toFixed(1),'누적 사용일수(전체기간)') +
+      stat(confCount+' / '+planCount,'확정 / 예정 건수') +
+      stat(shortCount,'연차 초과 인원');
+
+    var tbody = document.querySelector('#dashTable tbody');
+    tbody.innerHTML = '';
+    rows.forEach(function(r){
+      var grant = ENTITLEMENTS[r.name];
+      var remain = (grant!==undefined) ? (grant-r.total) : null;
+      var remainHtml = remain===null ? '<span class="remain-blank">-</span>'
+        : '<span class="'+(remain<0?'remain-neg':'remain-pos')+'">'+remain.toFixed(1)+'</span>';
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td><span class="pill '+teamClass(r.team)+'">'+r.team+'</span></td>'+
+        '<td>'+r.name+'</td>'+
+        '<td>'+r.연차.toFixed(1)+'</td>'+
+        '<td>'+r.휴가.toFixed(1)+'</td>'+
+        '<td>'+r.병가.toFixed(1)+'</td>'+
+        '<td>'+r.사가.toFixed(1)+'</td>'+
+        '<td style="font-weight:700">'+r.total.toFixed(1)+'</td>'+
+        '<td>'+(grant!==undefined?grant:'<span class="remain-blank">-</span>')+'</td>'+
+        '<td>'+remainHtml+'</td>';
+      tbody.appendChild(tr);
+    });
+  }
+  function stat(n,l){ return '<div class="stat"><div class="n">'+n+'</div><div class="l">'+l+'</div></div>'; }
+  document.querySelectorAll('#dashTable thead th[data-sort]').forEach(function(th){
+    th.addEventListener('click', function(){
+      var k = th.dataset.sort;
+      if(dashSort.key===k) dashSort.dir = dashSort.dir==='asc'?'desc':'asc';
+      else { dashSort.key=k; dashSort.dir='asc'; }
+      renderDashboard();
+    });
+  });
+
+  // ---------- CALENDAR ----------
+  var calState = {year:2026, month:7};
+  var DOW = ['일','월','화','수','목','금','토'];
+  function renderCalendar(){
+    document.getElementById('calLabel').textContent = calState.year+'년 '+calState.month+'월';
+    var grid = document.getElementById('calGrid');
+    grid.innerHTML = '';
+    DOW.forEach(function(d){ var e=document.createElement('div'); e.className='dow'; e.textContent=d; grid.appendChild(e); });
+
+    var first = new Date(calState.year, calState.month-1, 1);
+    var startDow = first.getDay();
+    var daysInMonth = new Date(calState.year, calState.month, 0).getDate();
+
+    for(var i=0;i<startDow;i++){ var e=document.createElement('div'); e.className='cell empty'; grid.appendChild(e); }
+    for(var day=1; day<=daysInMonth; day++){
+      var mm = String(calState.month).padStart(2,'0');
+      var dd = String(day).padStart(2,'0');
+      var dateStr = calState.year+'-'+mm+'-'+dd;
+      var todays = RECORDS.filter(function(r){ return r.start<=dateStr && dateStr<=r.end; });
+      var cell = document.createElement('div'); cell.className='cell';
+      var html = '<div class="dnum">'+day+'</div>';
+      var shown = todays.slice(0,4);
+      shown.forEach(function(r){
+        var planCls = r.status==='계획(예정)' ? ' plan' : '';
+        var halfTag = r.half!=='전일' ? (r.half==='오전반차'?'(오전)':'(오후)') : '';
+        html += '<span class="chip '+teamClass(r.team)+planCls+'" title="'+r.name+' · '+r.type+' · '+r.status+'">'+r.name+halfTag+'</span>';
+      });
+      if(todays.length>shown.length){ html += '<div class="more">+'+(todays.length-shown.length)+'명 더보기</div>'; }
+      cell.innerHTML = html;
+      grid.appendChild(cell);
+    }
+    var totalCells = startDow + daysInMonth;
+    var trailing = (7 - (totalCells % 7)) % 7;
+    for(var j=0;j<trailing;j++){ var e2=document.createElement('div'); e2.className='cell empty'; grid.appendChild(e2); }
+  }
+  document.getElementById('calPrev').addEventListener('click', function(){
+    calState.month--; if(calState.month<1){ calState.month=12; calState.year--; }
+    renderCalendar();
+  });
+  document.getElementById('calNext').addEventListener('click', function(){
+    calState.month++; if(calState.month>12){ calState.month=1; calState.year++; }
+    renderCalendar();
+  });
+
+  // ---------- LOG ----------
+  var logSort = {key:'start', dir:'desc'};
+  function renderLog(){
+    var recs = RECORDS.slice();
+    var search = document.getElementById('fSearch').value.trim();
+    var team = document.getElementById('fTeam').value;
+    var type = document.getElementById('fType').value;
+    var status = document.getElementById('fStatus').value;
+    var month = document.getElementById('fMonth').value;
+
+    recs = recs.filter(function(r){
+      if(search && r.name.indexOf(search)===-1) return false;
+      if(team && r.team!==team) return false;
+      if(type && r.type!==type) return false;
+      if(status && r.status!==status) return false;
+      if(month && r.start.substring(5,7)!==month) return false;
+      return true;
+    });
+    recs.forEach(function(r){ r.days = computeDays(r); });
+    recs.sort(function(a,b){
+      var k=logSort.key, dir = logSort.dir==='asc'?1:-1;
+      if(a[k]<b[k]) return -1*dir; if(a[k]>b[k]) return 1*dir; return 0;
+    });
+
+    var tbody = document.querySelector('#logTable tbody');
+    tbody.innerHTML = '';
+    if(recs.length===0){
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td colspan="8" class="empty-msg">조건에 맞는 기록이 없습니다.</td>';
+      tbody.appendChild(tr);
+      return;
+    }
+    recs.forEach(function(r){
+      var period = r.start===r.end ? r.start : (r.start+' ~ '+r.end);
+      var statusCls = r.status==='계획(예정)' ? 'plan' : 'conf';
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td><span class="pill '+teamClass(r.team)+'">'+r.team+'</span></td>'+
+        '<td>'+r.name+'</td>'+
+        '<td>'+period+'</td>'+
+        '<td>'+r.half+'</td>'+
+        '<td>'+r.type+'</td>'+
+        '<td><span class="pill '+statusCls+'">'+r.status+'</span></td>'+
+        '<td>'+r.days.toFixed(1)+'</td>'+
+        '<td style="color:var(--text-muted);font-size:12px">'+(r.note||'')+'</td>';
+      tbody.appendChild(tr);
+    });
+  }
+  ['fSearch','fTeam','fType','fStatus','fMonth'].forEach(function(id){
+    document.getElementById(id).addEventListener('input', renderLog);
+    document.getElementById(id).addEventListener('change', renderLog);
+  });
+  document.querySelectorAll('#logTable thead th[data-sort]').forEach(function(th){
+    th.addEventListener('click', function(){
+      var k = th.dataset.sort;
+      if(logSort.key===k) logSort.dir = logSort.dir==='asc'?'desc':'asc';
+      else { logSort.key=k; logSort.dir = k==='start'?'desc':'asc'; }
+      renderLog();
+    });
+  });
+
+  renderDashboard();
+  renderCalendar();
+  renderLog();
+})();
+</script>
+</body>
+</html>
