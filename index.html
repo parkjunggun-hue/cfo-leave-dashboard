@@ -3,137 +3,520 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>직원 근태·휴가 현황 (조회용)</title>
+<title>CFO室 대시보드</title>
 <style>
+
+:root{
+  --bg:#f5f6f9; --surface:#ffffff; --surface-2:#eef0f4; --border:#e0e3ea;
+  --text:#1b2130; --text-muted:#606b7d;
+  --accent:#2e5a86; --accent-soft:#e8f0f8;
+  --kh:#2e5a86; --kh-soft:#e8f0f8; --acc-kh:#2e5a86; --acc-kh-soft:#e8f0f8;
+  --jm:#1c7d54; --jm-soft:#e5f4ec; --acc-jm:#1c7d54; --acc-jm-soft:#e5f4ec;
+  --se:#a4650a; --se-soft:#fbf0dc; --acc-se:#a4650a; --acc-se-soft:#fbf0dc;
+  --success:#1c7d54; --success-soft:#e5f4ec;
+  --warning:#a4650a; --warning-soft:#fbf0dc;
+  --info:#6547b3; --info-soft:#f0ecfa;
+  --danger:#b23b3b; --danger-soft:#fbe6e6;
+  --ok:#1c7d54;
+  --shadow: 0 1px 2px rgba(20,25,40,0.04), 0 6px 20px rgba(20,25,40,0.05);
+}
+@media (prefers-color-scheme: dark){
   :root{
-    --bg:#f5f6f9; --surface:#ffffff; --surface-2:#eef0f4; --border:#e0e3ea;
-    --text:#1b2130; --text-muted:#606b7d;
-    --accent:#2e5a86; --accent-soft:#e8f0f8;
-    --kh:#2e5a86; --kh-soft:#e8f0f8;
-    --jm:#1c7d54; --jm-soft:#e5f4ec;
-    --se:#a4650a; --se-soft:#fbf0dc;
-    --danger:#b23b3b; --danger-soft:#fbe6e6;
-    --ok:#1c7d54;
-    --shadow:0 1px 2px rgba(20,25,40,.04),0 6px 20px rgba(20,25,40,.05);
-  }
-  @media (prefers-color-scheme: dark){
-    :root{
-      --bg:#12151c; --surface:#1a1e27; --surface-2:#20242e; --border:#2b3140;
-      --text:#e7eaf1; --text-muted:#98a1b3;
-      --accent:#7aa8d6; --accent-soft:#1c2c3c;
-      --kh:#7aa8d6; --kh-soft:#1c2c3c;
-      --jm:#52bf8c; --jm-soft:#15302a;
-      --se:#e2a94a; --se-soft:#382b13;
-      --danger:#e5807f; --danger-soft:#3a1f20;
-      --ok:#52bf8c;
-      --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 24px rgba(0,0,0,.35);
-    }
-  }
-  :root[data-theme="dark"]{
     --bg:#12151c; --surface:#1a1e27; --surface-2:#20242e; --border:#2b3140;
     --text:#e7eaf1; --text-muted:#98a1b3;
     --accent:#7aa8d6; --accent-soft:#1c2c3c;
-    --kh:#7aa8d6; --kh-soft:#1c2c3c;
-    --jm:#52bf8c; --jm-soft:#15302a;
-    --se:#e2a94a; --se-soft:#382b13;
+    --kh:#7aa8d6; --kh-soft:#1c2c3c; --acc-kh:#7aa8d6; --acc-kh-soft:#1c2c3c;
+    --jm:#52bf8c; --jm-soft:#15302a; --acc-jm:#52bf8c; --acc-jm-soft:#15302a;
+    --se:#e2a94a; --se-soft:#382b13; --acc-se:#e2a94a; --acc-se-soft:#382b13;
+    --success:#52bf8c; --success-soft:#15302a;
+    --warning:#e2a94a; --warning-soft:#382b13;
+    --info:#a892e6; --info-soft:#271f3d;
     --danger:#e5807f; --danger-soft:#3a1f20;
     --ok:#52bf8c;
-    --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 24px rgba(0,0,0,.35);
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 6px 24px rgba(0,0,0,0.35);
   }
-  :root[data-theme="light"]{
-    --bg:#f5f6f9; --surface:#ffffff; --surface-2:#eef0f4; --border:#e0e3ea;
-    --text:#1b2130; --text-muted:#606b7d;
-    --accent:#2e5a86; --accent-soft:#e8f0f8;
-    --kh:#2e5a86; --kh-soft:#e8f0f8;
-    --jm:#1c7d54; --jm-soft:#e5f4ec;
-    --se:#a4650a; --se-soft:#fbf0dc;
-    --danger:#b23b3b; --danger-soft:#fbe6e6;
-    --ok:#1c7d54;
-    --shadow:0 1px 2px rgba(20,25,40,.04),0 6px 20px rgba(20,25,40,.05);
-  }
-  *{box-sizing:border-box;}
-  body{background:var(--bg);color:var(--text);font-family:-apple-system,"Segoe UI","Pretendard","Noto Sans KR","Malgun Gothic","PingFang SC","Microsoft YaHei",sans-serif;line-height:1.5;padding:28px 20px 60px;}
-  .page{max-width:1100px;margin:0 auto;}
-  header.top{margin-bottom:18px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;}
-  .eyebrow{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:6px;}
-  h1{font-size:23px;font-weight:800;margin:0 0 4px;letter-spacing:-.01em;}
-  .sub{color:var(--text-muted);font-size:13.5px;}
-  .snapshot{
+}
+:root[data-theme="dark"]{
+  --bg:#12151c; --surface:#1a1e27; --surface-2:#20242e; --border:#2b3140;
+  --text:#e7eaf1; --text-muted:#98a1b3;
+  --accent:#7aa8d6; --accent-soft:#1c2c3c;
+  --kh:#7aa8d6; --kh-soft:#1c2c3c; --acc-kh:#7aa8d6; --acc-kh-soft:#1c2c3c;
+  --jm:#52bf8c; --jm-soft:#15302a; --acc-jm:#52bf8c; --acc-jm-soft:#15302a;
+  --se:#e2a94a; --se-soft:#382b13; --acc-se:#e2a94a; --acc-se-soft:#382b13;
+  --success:#52bf8c; --success-soft:#15302a;
+  --warning:#e2a94a; --warning-soft:#382b13;
+  --info:#a892e6; --info-soft:#271f3d;
+  --danger:#e5807f; --danger-soft:#3a1f20;
+  --ok:#52bf8c;
+  --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 6px 24px rgba(0,0,0,0.35);
+}
+:root[data-theme="light"]{
+  --bg:#f5f6f9; --surface:#ffffff; --surface-2:#eef0f4; --border:#e0e3ea;
+  --text:#1b2130; --text-muted:#606b7d;
+  --accent:#2e5a86; --accent-soft:#e8f0f8;
+  --kh:#2e5a86; --kh-soft:#e8f0f8; --acc-kh:#2e5a86; --acc-kh-soft:#e8f0f8;
+  --jm:#1c7d54; --jm-soft:#e5f4ec; --acc-jm:#1c7d54; --acc-jm-soft:#e5f4ec;
+  --se:#a4650a; --se-soft:#fbf0dc; --acc-se:#a4650a; --acc-se-soft:#fbf0dc;
+  --success:#1c7d54; --success-soft:#e5f4ec;
+  --warning:#a4650a; --warning-soft:#fbf0dc;
+  --info:#6547b3; --info-soft:#f0ecfa;
+  --danger:#b23b3b; --danger-soft:#fbe6e6;
+  --ok:#1c7d54;
+  --shadow: 0 1px 2px rgba(20,25,40,0.04), 0 6px 20px rgba(20,25,40,0.05);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:-apple-system,"Segoe UI","Pretendard","Noto Sans KR","Malgun Gothic","PingFang SC","Microsoft YaHei",sans-serif;
+  line-height:1.5;
+}
+
+/* ---------- shell layout ---------- */
+.shell{display:flex;min-height:100vh;}
+.shell-sidebar{
+  width:248px;flex:none;background:var(--surface);border-right:1px solid var(--border);
+  padding:22px 14px;position:sticky;top:0;align-self:flex-start;height:100vh;overflow-y:auto;
+}
+.shell-brand{font-size:15px;font-weight:800;letter-spacing:-.01em;margin-bottom:2px;}
+.shell-brand-sub{font-size:11px;color:var(--text-muted);margin-bottom:22px;}
+.shell-nav{display:flex;flex-direction:column;gap:4px;}
+.shell-nav-item{
+  display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:10px;
+  cursor:pointer;color:var(--text-muted);user-select:none;border:1px solid transparent;
+}
+.shell-nav-item:hover{background:var(--surface-2);color:var(--text);}
+.shell-nav-item.active{background:var(--accent-soft);color:var(--accent);border-color:var(--accent);}
+.shell-nav-item .dot{width:8px;height:8px;border-radius:50%;background:currentColor;opacity:.55;margin-top:5px;flex:none;}
+.shell-nav-item .txt{display:flex;flex-direction:column;gap:2px;min-width:0;}
+.shell-nav-item .lbl{font-size:13.5px;font-weight:700;line-height:1.3;}
+.shell-nav-item .dsc{font-size:11px;color:var(--text-muted);line-height:1.3;}
+.shell-nav-item.active .dsc{color:var(--accent);opacity:.8;}
+.shell-sidebar-foot{margin-top:20px;padding-top:14px;border-top:1px solid var(--border);font-size:10.5px;color:var(--text-muted);}
+
+.shell-main{flex:1;min-width:0;}
+.pg{display:none;}
+.pg.active{display:block;}
+
+@media (max-width: 860px){
+  .shell{flex-direction:column;}
+  .shell-sidebar{width:100%;height:auto;position:relative;border-right:none;border-bottom:1px solid var(--border);}
+  .shell-nav{flex-direction:row;overflow-x:auto;gap:8px;}
+  .shell-nav-item{flex:none;}
+  .shell-sidebar-foot{display:none;}
+}
+
+  /* ---- 주간계획 이행 점검 ---- */
+.pg-weekly .page{max-width:960px;margin:0 auto;}.pg-weekly header.top{margin-bottom:28px;}.pg-weekly .eyebrow{
+    font-size:12.5px;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--accent);font-weight:700;margin-bottom:8px;
+  }.pg-weekly h1{font-size:26px;font-weight:800;margin:0 0 6px;letter-spacing:-0.01em;text-wrap:balance;}.pg-weekly .sub{color:var(--text-muted);font-size:14px;}.pg-weekly .sub b{color:var(--text);font-weight:600;}.pg-weekly .note{
+    margin-top:16px;
+    background:var(--accent-soft);
+    border:1px solid var(--border);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:12px 14px;
+    font-size:13px;
+    color:var(--text);
+  }.pg-weekly .note b{color:var(--accent);}.pg-weekly .stats{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
+    margin:24px 0 32px;
+  }.pg-weekly .stat{
+    background:var(--surface);border:1px solid var(--border);border-radius:10px;
+    padding:14px 16px;box-shadow:var(--shadow);
+  }.pg-weekly .stat .n{font-size:26px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}.pg-weekly .stat .l{font-size:12.5px;color:var(--text-muted);margin-top:2px;}.pg-weekly .stat.done .n{color:var(--success);}.pg-weekly .stat.delay .n{color:var(--warning);}.pg-weekly .stat.new .n{color:var(--info);}.pg-weekly section.team{
+    background:var(--surface);border:1px solid var(--border);border-radius:12px;
+    box-shadow:var(--shadow);
+    margin-bottom:20px;overflow:hidden;
+  }.pg-weekly .team-head{
+    display:flex;align-items:center;gap:10px;
+    padding:14px 18px;border-bottom:1px solid var(--border);
+    background:var(--surface-2);
+  }.pg-weekly .team-head .badge{
+    width:30px;height:30px;border-radius:8px;background:var(--accent);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex:none;
+  }.pg-weekly .team-head h2{font-size:16px;font-weight:800;margin:0;}.pg-weekly .team-head span{font-size:12px;color:var(--text-muted);}.pg-weekly .cat{padding:14px 18px 4px;}.pg-weekly .cat-title{
+    font-size:11.5px;font-weight:700;color:var(--text-muted);
+    text-transform:uppercase;letter-spacing:.06em;
+    margin:10px 0 8px;
+  }.pg-weekly .tablewrap{overflow-x:auto;}.pg-weekly table{width:100%;border-collapse:collapse;font-size:13.3px;}.pg-weekly thead th{
+    text-align:left;font-size:11.5px;color:var(--text-muted);font-weight:700;
+    text-transform:uppercase;letter-spacing:.04em;
+    padding:6px 8px;border-bottom:1px solid var(--border);
+  }.pg-weekly tbody td{
+    padding:9px 8px;border-bottom:1px solid var(--border);
+    vertical-align:top;
+  }.pg-weekly tbody tr:last-child td{border-bottom:none;}.pg-weekly td.plan{color:var(--text-muted);width:34%;}.pg-weekly td.actual{width:40%;}.pg-weekly td.status{width:18%;white-space:nowrap;}.pg-weekly tr.delay td.actual{color:var(--text-muted);font-style:italic;}.pg-weekly tr.delay{background:color-mix(in srgb, var(--warning-soft) 55%, transparent);}.pg-weekly tr.new{background:color-mix(in srgb, var(--info-soft) 45%, transparent);}.pg-weekly .pill{
+    display:inline-flex;align-items:center;gap:5px;
+    padding:3px 9px;border-radius:999px;font-size:12px;font-weight:700;
+    white-space:nowrap;
+  }.pg-weekly .pill.done{background:var(--success-soft);color:var(--success);}.pg-weekly .pill.delay{background:var(--warning-soft);color:var(--warning);}.pg-weekly .pill.new{background:var(--info-soft);color:var(--info);}.pg-weekly .pill.progress{background:var(--surface-2);color:var(--text-muted);border:1px solid var(--border);}.pg-weekly .callout{
+    margin-top:28px;
+    background:var(--warning-soft);border:1px solid var(--border);
+    border-left:3px solid var(--warning);
+    border-radius:10px;padding:16px 18px;
+  }.pg-weekly .callout h3{margin:0 0 8px;font-size:14.5px;font-weight:800;color:var(--warning);}.pg-weekly .callout ol{margin:0;padding-left:18px;font-size:13.5px;}.pg-weekly .callout li{margin-bottom:6px;}.pg-weekly .callout li b{color:var(--text);}.pg-weekly footer{margin-top:26px;font-size:12px;color:var(--text-muted);}.pg-weekly footer p{margin:4px 0;}
+
+
+  /* ---- 정기 반복 업무 캘린더 ---- */
+.pg-cal .page{max-width:1040px;margin:0 auto;}.pg-cal .eyebrow{font-size:12.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:8px;}.pg-cal h1{font-size:26px;font-weight:800;margin:0 0 6px;letter-spacing:-0.01em;text-wrap:balance;}.pg-cal .sub{color:var(--text-muted);font-size:14px;}.pg-cal .sub b{color:var(--text);font-weight:600;}.pg-cal .legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;font-size:12.5px;color:var(--text-muted);}.pg-cal .legend span{display:inline-flex;align-items:center;gap:6px;}.pg-cal .dot{width:9px;height:9px;border-radius:50%;display:inline-block;}.pg-cal .dot.kh{background:var(--acc-kh);}.pg-cal .dot.jm{background:var(--acc-jm);}.pg-cal .dot.se{background:var(--acc-se);}.pg-cal h2.sectitle{font-size:15px;font-weight:800;margin:36px 0 4px;display:flex;align-items:center;gap:8px;}.pg-cal h2.sectitle .n{
+    width:22px;height:22px;border-radius:6px;background:var(--accent);color:#fff;
+    display:inline-flex;align-items:center;justify-content:center;font-size:12px;
+  }.pg-cal p.secdesc{font-size:13px;color:var(--text-muted);margin:0 0 16px;}.pg-cal .week-strip{
+    display:grid;grid-template-columns:repeat(5,1fr);gap:10px;
+  }.pg-cal .week-strip .day{
+    background:var(--surface);border:1px solid var(--border);border-radius:10px;
+    padding:12px;min-height:120px;box-shadow:var(--shadow);
+  }.pg-cal .week-strip .day .dname{font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:8px;}.pg-cal .chip{
+    display:block;font-size:12px;padding:5px 8px;border-radius:7px;margin-bottom:6px;
+    line-height:1.35;
+  }.pg-cal .chip.kh{background:var(--acc-kh-soft);color:var(--acc-kh);}.pg-cal .chip.jm{background:var(--acc-jm-soft);color:var(--acc-jm);}.pg-cal .chip.se{background:var(--acc-se-soft);color:var(--acc-se);}.pg-cal .chip.faint{opacity:.55;font-style:italic;}.pg-cal .cal-wrap{overflow-x:auto;}.pg-cal .cal{
+    display:grid;grid-template-columns:repeat(7,minmax(108px,1fr));gap:8px;
+    min-width:820px;
+  }.pg-cal .cal .dow{font-size:11px;font-weight:700;color:var(--text-muted);text-align:center;padding-bottom:2px;text-transform:uppercase;letter-spacing:.04em;}.pg-cal .cal .cell{
+    background:var(--surface);border:1px solid var(--border);border-radius:9px;
+    padding:8px;min-height:78px;box-shadow:var(--shadow);
+  }.pg-cal .cal .cell.empty{background:transparent;border:none;box-shadow:none;}.pg-cal .cal .cell .dnum{font-size:12px;font-weight:800;color:var(--text-muted);font-variant-numeric:tabular-nums;margin-bottom:4px;}.pg-cal .cal .cell.hot{border-color:var(--accent);}.pg-cal .cal .chip{font-size:11px;padding:3px 6px;margin-bottom:4px;}.pg-cal .qtl{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;margin-bottom:10px;}.pg-cal .qtl .m{
+    background:var(--surface-2);border:1px solid var(--border);border-radius:7px;
+    text-align:center;font-size:11px;font-weight:700;color:var(--text-muted);padding:6px 2px;
+  }.pg-cal .qtl .m.obs{background:var(--accent-soft);color:var(--accent);border-color:var(--accent);}.pg-cal .event-rows{display:flex;flex-direction:column;gap:10px;}.pg-cal .erow{
+    background:var(--surface);border:1px solid var(--border);border-radius:10px;
+    padding:12px 14px;box-shadow:var(--shadow);
+    display:grid;grid-template-columns:150px 1fr;gap:14px;align-items:center;
+  }.pg-cal .erow .span{font-size:12px;font-weight:700;color:var(--text-muted);white-space:nowrap;}.pg-cal .erow .desc{font-size:13.5px;}.pg-cal .erow .desc b{color:var(--text);}.pg-cal .caveat{
+    margin-top:30px;background:var(--surface-2);border:1px solid var(--border);
+    border-left:3px solid var(--accent);border-radius:8px;padding:12px 14px;font-size:12.5px;color:var(--text-muted);
+  }.pg-cal footer{margin-top:20px;font-size:12px;color:var(--text-muted);}
+
+
+  /* ---- 근태·휴가 현황 ---- */
+.pg-leave .page{max-width:1100px;margin:0 auto;}.pg-leave header.top{margin-bottom:18px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;}.pg-leave .eyebrow{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:6px;}.pg-leave h1{font-size:23px;font-weight:800;margin:0 0 4px;letter-spacing:-.01em;}.pg-leave .sub{color:var(--text-muted);font-size:13.5px;}.pg-leave .snapshot{
     background:var(--surface);border:1px solid var(--border);border-radius:9px;
     padding:9px 14px;font-size:12px;color:var(--text-muted);white-space:nowrap;box-shadow:var(--shadow);
-  }
-  .snapshot b{color:var(--accent);}
-  .viewonly{
+  }.pg-leave .snapshot b{color:var(--accent);}.pg-leave .viewonly{
     display:inline-flex;align-items:center;gap:5px;background:var(--accent-soft);color:var(--accent);
     font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;margin-bottom:6px;
-  }
-
-  .tabs{display:flex;gap:6px;margin:18px 0 20px;border-bottom:1px solid var(--border);}
-  .tab{padding:9px 16px;font-size:13.5px;font-weight:700;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;user-select:none;}
-  .tab.active{color:var(--accent);border-bottom-color:var(--accent);}
-  .tab:hover{color:var(--text);}
-
-  .panel{display:none;}
-  .panel.active{display:block;}
-
-  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;}
-  .stat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;box-shadow:var(--shadow);}
-  .stat .n{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em;}
-  .stat .l{font-size:11.5px;color:var(--text-muted);margin-top:2px;}
-
-  .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px;}
-  .card-head{padding:12px 16px;border-bottom:1px solid var(--border);background:var(--surface-2);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
-  .card-head h2{font-size:14px;font-weight:800;margin:0;}
-  .filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
-  select,input[type=text]{
+  }.pg-leave .tabs{display:flex;gap:6px;margin:18px 0 20px;border-bottom:1px solid var(--border);}.pg-leave .tab{padding:9px 16px;font-size:13.5px;font-weight:700;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;user-select:none;}.pg-leave .tab.active{color:var(--accent);border-bottom-color:var(--accent);}.pg-leave .tab:hover{color:var(--text);}.pg-leave .panel{display:none;}.pg-leave .panel.active{display:block;}.pg-leave .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;}.pg-leave .stat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;box-shadow:var(--shadow);}.pg-leave .stat .n{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em;}.pg-leave .stat .l{font-size:11.5px;color:var(--text-muted);margin-top:2px;}.pg-leave .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px;}.pg-leave .card-head{padding:12px 16px;border-bottom:1px solid var(--border);background:var(--surface-2);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}.pg-leave .card-head h2{font-size:14px;font-weight:800;margin:0;}.pg-leave .filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}.pg-leave select, .pg-leave input[type=text]{
     font:inherit;font-size:12.5px;background:var(--surface);color:var(--text);
     border:1px solid var(--border);border-radius:7px;padding:6px 9px;
-  }
-  select:focus,input:focus{outline:2px solid var(--accent);outline-offset:1px;}
+  }.pg-leave select:focus, .pg-leave input:focus{outline:2px solid var(--accent);outline-offset:1px;}.pg-leave table{width:100%;border-collapse:collapse;font-size:12.8px;}.pg-leave thead th{text-align:left;font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:.03em;padding:8px 10px;border-bottom:1px solid var(--border);white-space:nowrap;cursor:pointer;}.pg-leave thead th:hover{color:var(--accent);}.pg-leave tbody td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:middle;}.pg-leave tbody tr:last-child td{border-bottom:none;}.pg-leave tbody tr:hover{background:var(--surface-2);}.pg-leave .tablewrap{overflow-x:auto;}.pg-leave .pill{display:inline-flex;align-items:center;gap:5px;padding:2.5px 8px;border-radius:999px;font-size:11.5px;font-weight:700;white-space:nowrap;}.pg-leave .pill.kh{background:var(--kh-soft);color:var(--kh);}.pg-leave .pill.jm{background:var(--jm-soft);color:var(--jm);}.pg-leave .pill.se{background:var(--se-soft);color:var(--se);}.pg-leave .pill.plan{background:transparent;border:1px dashed var(--text-muted);color:var(--text-muted);}.pg-leave .pill.conf{background:var(--accent-soft);color:var(--accent);}.pg-leave .remain-pos{color:var(--ok);font-weight:700;}.pg-leave .remain-neg{color:var(--danger);font-weight:700;}.pg-leave .remain-blank{color:var(--text-muted);}.pg-leave .cal-nav{display:flex;align-items:center;gap:10px;}.pg-leave .cal-nav button{background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:5px 11px;font-size:13px;cursor:pointer;color:var(--text);}.pg-leave .cal-nav button:hover{border-color:var(--accent);color:var(--accent);}.pg-leave .cal-label{font-weight:800;font-size:14px;min-width:88px;text-align:center;}.pg-leave .cal-wrap{overflow-x:auto;padding:16px;}.pg-leave .cal{display:grid;grid-template-columns:repeat(7,minmax(104px,1fr));gap:7px;min-width:760px;}.pg-leave .cal .dow{font-size:10.5px;font-weight:700;color:var(--text-muted);text-align:center;padding-bottom:2px;text-transform:uppercase;}.pg-leave .cal .cell{background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:6px;min-height:74px;}.pg-leave .cal .cell.empty{background:transparent;border:none;}.pg-leave .cal .cell .dnum{font-size:11.5px;font-weight:800;color:var(--text-muted);font-variant-numeric:tabular-nums;margin-bottom:3px;}.pg-leave .cal .chip{display:block;font-size:10.5px;padding:2px 6px;border-radius:5px;margin-bottom:3px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}.pg-leave .cal .chip.kh{background:var(--kh-soft);color:var(--kh);}.pg-leave .cal .chip.jm{background:var(--jm-soft);color:var(--jm);}.pg-leave .cal .chip.se{background:var(--se-soft);color:var(--se);}.pg-leave .cal .chip.plan{border:1px dashed currentColor;background:transparent;}.pg-leave .cal .more{font-size:10px;color:var(--text-muted);}.pg-leave footer{margin-top:24px;font-size:11.5px;color:var(--text-muted);}.pg-leave .empty-msg{padding:24px;text-align:center;color:var(--text-muted);font-size:13px;}
 
-  table{width:100%;border-collapse:collapse;font-size:12.8px;}
-  thead th{text-align:left;font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:.03em;padding:8px 10px;border-bottom:1px solid var(--border);white-space:nowrap;cursor:pointer;}
-  thead th:hover{color:var(--accent);}
-  tbody td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:middle;}
-  tbody tr:last-child td{border-bottom:none;}
-  tbody tr:hover{background:var(--surface-2);}
-  .tablewrap{overflow-x:auto;}
-
-  .pill{display:inline-flex;align-items:center;gap:5px;padding:2.5px 8px;border-radius:999px;font-size:11.5px;font-weight:700;white-space:nowrap;}
-  .pill.kh{background:var(--kh-soft);color:var(--kh);}
-  .pill.jm{background:var(--jm-soft);color:var(--jm);}
-  .pill.se{background:var(--se-soft);color:var(--se);}
-  .pill.plan{background:transparent;border:1px dashed var(--text-muted);color:var(--text-muted);}
-  .pill.conf{background:var(--accent-soft);color:var(--accent);}
-
-  .remain-pos{color:var(--ok);font-weight:700;}
-  .remain-neg{color:var(--danger);font-weight:700;}
-  .remain-blank{color:var(--text-muted);}
-
-  /* calendar */
-  .cal-nav{display:flex;align-items:center;gap:10px;}
-  .cal-nav button{background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:5px 11px;font-size:13px;cursor:pointer;color:var(--text);}
-  .cal-nav button:hover{border-color:var(--accent);color:var(--accent);}
-  .cal-label{font-weight:800;font-size:14px;min-width:88px;text-align:center;}
-  .cal-wrap{overflow-x:auto;padding:16px;}
-  .cal{display:grid;grid-template-columns:repeat(7,minmax(104px,1fr));gap:7px;min-width:760px;}
-  .cal .dow{font-size:10.5px;font-weight:700;color:var(--text-muted);text-align:center;padding-bottom:2px;text-transform:uppercase;}
-  .cal .cell{background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:6px;min-height:74px;}
-  .cal .cell.empty{background:transparent;border:none;}
-  .cal .cell .dnum{font-size:11.5px;font-weight:800;color:var(--text-muted);font-variant-numeric:tabular-nums;margin-bottom:3px;}
-  .cal .chip{display:block;font-size:10.5px;padding:2px 6px;border-radius:5px;margin-bottom:3px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .cal .chip.kh{background:var(--kh-soft);color:var(--kh);}
-  .cal .chip.jm{background:var(--jm-soft);color:var(--jm);}
-  .cal .chip.se{background:var(--se-soft);color:var(--se);}
-  .cal .chip.plan{border:1px dashed currentColor;background:transparent;}
-  .cal .more{font-size:10px;color:var(--text-muted);}
-
-  footer{margin-top:24px;font-size:11.5px;color:var(--text-muted);}
-  .empty-msg{padding:24px;text-align:center;color:var(--text-muted);font-size:13px;}
 </style>
 </head>
 <body>
 
+<div class="shell">
+  <aside class="shell-sidebar">
+    <div class="shell-brand">CFO室 대시보드</div>
+    <div class="shell-brand-sub">3개 리포트 통합 조회</div>
+    <nav class="shell-nav">
+      <div class="shell-nav-item active" data-target="pg-weekly">
+        <span class="dot"></span>
+        <span class="txt"><span class="lbl">주간계획 이행 점검</span><span class="dsc">지난주 계획 대비 실제 수행 비교</span></span>
+      </div>
+      <div class="shell-nav-item" data-target="pg-cal">
+        <span class="dot"></span>
+        <span class="txt"><span class="lbl">정기 반복 업무 캘린더</span><span class="dsc">매주·매월·분기 반복 일정</span></span>
+      </div>
+      <div class="shell-nav-item" data-target="pg-leave">
+        <span class="dot"></span>
+        <span class="txt"><span class="lbl">근태·휴가 현황</span><span class="dsc">직원별 연차·병가 누적 조회</span></span>
+      </div>
+    </nav>
+    <div class="shell-sidebar-foot">CFO室周间计划_260710.xlsx 기반<br/>최종 업데이트 2026-07-17</div>
+  </aside>
+  <main class="shell-main">
+<div class="pg pg-weekly" id="pg-weekly">
+<div class="page">
+  <header class="top">
+    <div class="eyebrow">CFO室 周间计划 · 이행 점검</div>
+    <h1>지난주 계획, 실제로 진행됐나</h1>
+    <div class="sub">비교 대상: <b>2026.07.03 시트의 下周计划(D열)</b> → <b>2026.07.10 시트의 本周总结(C열)</b> · 대상 기간 <b>07/06 ~ 07/10</b></div>
+    <div class="note">
+      오늘(<b>2026-07-14</b>) 기준 이번 주(07/13~07/17)는 <b>2026.07.10 시트의 D열에 계획만 존재</b>하고, 그 실적을 담을 다음 시트(2026.07.17)가 아직 없어 실적 비교가 불가능합니다.
+      대신 가장 최근에 실적이 확정된 <b>지난주(07/06~07/10)</b>의 계획 대비 실행 여부를 비교했습니다.
+    </div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="n">27</div><div class="l">점검 대상 항목</div></div>
+    <div class="stat done"><div class="n">21</div><div class="l">완료 / 정상 수행</div></div>
+    <div class="stat delay"><div class="n">3</div><div class="l">미완료 → 차주 이월</div></div>
+    <div class="stat new"><div class="n">2</div><div class="l">계획에 없던 신규 업무</div></div>
+  </div>
+
+  <!-- 회계 -->
+  <section class="team">
+    <div class="team-head"><div class="badge">会</div><h2>会计 (회계)</h2><span>재고/결산/PKG 등</span></div>
+
+    <div class="cat">
+      <div class="cat-title">一般业务事项</div>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>지난주 계획 (07.03 계획)</th><th>이번주 실제 (07.10 보고)</th><th>상태</th></tr></thead>
+          <tbody>
+            <tr><td class="plan">① LCM资料</td><td class="actual">LCM资料</td><td class="status"><span class="pill done">완료</span></td></tr>
+            <tr><td class="plan">② 库存额/库存保有日数反馈/现金产出 → SO室</td><td class="actual">동일 수행</td><td class="status"><span class="pill done">완료</span></td></tr>
+            <tr><td class="plan">③ 7月品牌别股东资本费用共享</td><td class="actual">동일 수행</td><td class="status"><span class="pill done">완료</span></td></tr>
+            <tr class="delay"><td class="plan">④ 集团CFO室 재고관리판/현금시드머니 提交</td><td class="actual">— (실제 보고 없음, 07.10 계획 D7에 재등장)</td><td class="status"><span class="pill delay">이월</span></td></tr>
+            <tr><td class="plan">⑤ SPAO 7月支付额度共享</td><td class="actual">동일 수행</td><td class="status"><span class="pill done">완료</span></td></tr>
+            <tr><td class="plan">⑥ PRC 报表（7.9）</td><td class="actual">동일 수행</td><td class="status"><span class="pill done">완료</span></td></tr>
+            <tr><td class="plan">⑦ Q2 PKG - 股权图/出资证明书/Event List</td><td class="actual">동일 수행</td><td class="status"><span class="pill done">완료</span></td></tr>
+            <tr class="delay"><td class="plan">⑧ 2026Q2银行授信数据</td><td class="actual">— (실제 보고 없음, 07.10 계획 D10에 재등장)</td><td class="status"><span class="pill delay">이월</span></td></tr>
+            <tr class="new"><td class="plan">— (계획에 없었음)</td><td class="actual">Eland international support letter &amp; undertaking letter 沟通</td><td class="status"><span class="pill new">신규</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="cat-title">特别事项 及 项目关联内容</div>
+      <div class="tablewrap">
+        <table>
+          <tbody>
+            <tr><td class="plan" style="width:34%">① 财务相关管理/待处理事项 继续整理</td><td class="actual" style="width:40%">실제·차주계획 모두 미등장</td><td class="status" style="width:18%"><span class="pill progress">확인 필요</span></td></tr>
+            <tr><td class="plan">② 各支社大法人分公司银行账户余额上划总部并进行账务处理</td><td class="actual">동일 수행 (차주도 계속)</td><td class="status"><span class="pill done">완료</span></td></tr>
+            <tr><td class="plan">③ 拼多多/衣念/品诚 超星星框架协议审核</td><td class="actual">동일 수행 (차주도 계속)</td><td class="status"><span class="pill done">완료</span></td></tr>
+            <tr><td class="plan">④ IFRS18 适用准备 - 集团要求的资料提供</td><td class="actual">동일 수행 (차주도 계속)</td><td class="status"><span class="pill done">완료</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 자금 -->
+  <section class="team">
+    <div class="team-head"><div class="badge">资</div><h2>资金 (자금)</h2><span>대출 상환/차입/외환신고 등</span></div>
+
+    <div class="cat">
+      <div class="cat-title">一般业务事项</div>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>지난주 계획 (07.03 계획)</th><th>이번주 실제 (07.10 보고)</th><th>상태</th></tr></thead>
+          <tbody>
+            <tr><td class="plan">① 每周付款预算的确认</td><td class="actual">동일 수행</td><td class="status"><span class="pill done">완료</span></td></tr>
+            <tr><td class="plan">② 支社&总部每周付款</td><td class="actual">동일 수행</td><td class="status"><span class="pill done">완료</span></td></tr>
+            <tr><td class="plan">③ 归还银行贷款 1.05亿（7/9）</td><td class="actual">归还银行贷款 1.05亿（7/9）</td><td class="status"><span class="pill done">완료·일치</span></td></tr>
+            <tr><td class="plan">④ 借款 7000万（7/10）</td><td class="actual">借款 7000万（7/10）</td><td class="status"><span class="pill done">완료·일치</span></td></tr>
+            <tr><td class="plan">⑤ MD收款确认</td><td class="actual">동일 수행</td><td class="status"><span class="pill done">완료</span></td></tr>
+            <tr><td class="plan">⑥ 越南超两个月的账期AR/AP清账</td><td class="actual">동일 수행</td><td class="status"><span class="pill done">완료</span></td></tr>
+            <tr><td class="plan">⑦ F204和G500的外汇管理局资料申报</td><td class="actual">동일 수행</td><td class="status"><span class="pill done">완료</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="cat-title">特别事项 及 项目关联内容</div>
+      <div class="tablewrap">
+        <table>
+          <tbody>
+            <tr><td class="plan" style="width:34%">① 农商银行2026年度授信</td><td class="actual" style="width:40%">진행중 (차주 계획에도 계속 등장)</td><td class="status" style="width:18%"><span class="pill progress">진행중</span></td></tr>
+            <tr><td class="plan">② 招商银行2026年度授信</td><td class="actual">진행중 (차주 계획에도 계속 등장)</td><td class="status"><span class="pill progress">진행중</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 세무 -->
+  <section class="team">
+    <div class="team-head"><div class="badge">税</div><h2>税务 (세무)</h2><span>세금신고/TP리포트/수출환급 등</span></div>
+
+    <div class="cat">
+      <div class="cat-title">一般业务事项</div>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>지난주 계획 (07.03 계획)</th><th>이번주 실제 (07.10 보고)</th><th>상태</th></tr></thead>
+          <tbody>
+            <tr><td class="plan">① 2季度印花税及企业所得税计算表制作及确认</td><td class="actual">동일 수행</td><td class="status"><span class="pill done">완료</span></td></tr>
+            <tr><td class="plan">② 6月所属期税金申报</td><td class="actual">동일 수행</td><td class="status"><span class="pill done">완료</span></td></tr>
+            <tr><td class="plan">③ 6月所属期统计申报</td><td class="actual">동일 수행</td><td class="status"><span class="pill done">완료</span></td></tr>
+            <tr><td class="plan">④ 7月非贸支付（MD商标权对外支付 관심）</td><td class="actual">MD商标权税金 已支付</td><td class="status"><span class="pill done">완료·확정</span></td></tr>
+            <tr><td class="plan">⑤ 25年度TP报告确认（F201/F202/F203)</td><td class="actual">draft 문제 반영 단계 (확인 완료 아님)</td><td class="status"><span class="pill progress">진행중</span></td></tr>
+            <tr><td class="plan">⑥ 个别外籍员工年度汇算清缴申报补报</td><td class="actual">동일 수행 (차주도 계속)</td><td class="status"><span class="pill done">완료</span></td></tr>
+            <tr><td class="plan">⑦ 7月批零预测</td><td class="actual">동일 수행</td><td class="status"><span class="pill done">완료</span></td></tr>
+            <tr><td class="plan">⑧ G500注册虚拟地址租赁合同续签</td><td class="actual">진행중 (차주 계획에도 계속 등장)</td><td class="status"><span class="pill progress">진행중</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="cat-title">特别事项 及 项目关联内容</div>
+      <div class="tablewrap">
+        <table>
+          <tbody>
+            <tr class="delay"><td class="plan" style="width:34%">① F203出口内销同一张报关单进口处理</td><td class="actual" style="width:40%">— (실제 보고 없음, 07.10 계획 D63에 재등장)</td><td class="status" style="width:18%"><span class="pill delay">이월</span></td></tr>
+            <tr><td class="plan">② 出口退税复核部分进度跟进（F204 자료준비）</td><td class="actual">자료준비 <b>完毕</b> — 완료 명시</td><td class="status"><span class="pill done">완료</span></td></tr>
+            <tr><td class="plan">③ F202 25年度出口退税疑点反馈</td><td class="actual">F202/F203 <b>已反馈</b> — 완료 명시 (F203까지 확장)</td><td class="status"><span class="pill done">완료</span></td></tr>
+            <tr class="new"><td class="plan">— (계획에 없었음)</td><td class="actual">千户集团大企业涉税信息库报告制作</td><td class="status"><span class="pill new">신규</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <div class="callout">
+    <h3>⚠ 차주(07/13~07/17)로 이월된 미완료 항목 3건</h3>
+    <ol>
+      <li><b>[회계]</b> 集团CFO室 재고관리판 / 현금시드머니 提交 — 07.10 계획에 재등장</li>
+      <li><b>[회계]</b> 2026Q2银行授信数据 — 07.10 계획에 재등장</li>
+      <li><b>[세무]</b> F203出口内销同一张报关单进口处理 — 07.10 계획에 재등장</li>
+    </ol>
+  </div>
+
+  <footer>
+    <p>산정 기준: "실제(C열, 本周工作总结)"에 항목이 그대로 나타나면 완료로 간주, 나타나지 않고 다음 계획(D열)에 동일 문구로 재등장하면 이월로 간주. "진행중"은 계획·실제·차주계획에 매주 동일하게 등장하는 장기/상시 건(은행 여신, 계약 갱신 등)임.</p>
+    <p>출처: CFO室周间计划_260710.xlsx — 시트 "2026.07.03 周间计划"(D열) 및 "2026.07.10 周间计划"(C열)</p>
+  </footer>
+</div>
+
+</div>
+
+<div class="pg pg-cal" id="pg-cal">
+<div class="page">
+  <header>
+    <div class="eyebrow">CFO室 周间计划 · 16주 전체 시트 분석</div>
+    <h1>정기적으로 반복되는 업무 캘린더</h1>
+    <div class="sub">2026.03.27 ~ 2026.07.10 사이 <b>16개 주간 시트</b>의 실제 수행 기록(本周)을 전부 모아, 매주 · 매월 · 매분기/연간 단위로 반복되는 패턴만 추렸습니다.</div>
+    <div class="legend">
+      <span><i class="dot kh"></i>会计(회계)</span>
+      <span><i class="dot jm"></i>资金(자금)</span>
+      <span><i class="dot se"></i>税务(세무)</span>
+    </div>
+  </header>
+
+  <!-- WEEKLY -->
+  <h2 class="sectitle"><span class="n">1</span>매주 반복</h2>
+  <p class="secdesc">16주 전체에서 예외 없이 매주 등장한 업무. 요일이 명시된 것은 해당 요일에 배치.</p>
+  <div class="week-strip">
+    <div class="day"><div class="dname">월요일</div>
+      <span class="chip kh">LCM자료 제출 (周一中午前)</span>
+    </div>
+    <div class="day"><div class="dname">화요일</div>
+    </div>
+    <div class="day"><div class="dname">수요일</div>
+    </div>
+    <div class="day"><div class="dname">목요일</div>
+    </div>
+    <div class="day"><div class="dname">금요일</div>
+    </div>
+  </div>
+  <div class="week-strip" style="margin-top:10px;grid-template-columns:1fr 1fr;">
+    <div class="day" style="min-height:auto;">
+      <div class="dname">요일 미지정 · 매주 반복</div>
+      <span class="chip jm">매주 지급예산 확인 (每周付款预算的确认)</span>
+      <span class="chip jm">지사·본부 매주 지급 (支社&amp;总部每周付款)</span>
+    </div>
+    <div class="day" style="min-height:auto;">
+      <div class="dname">요일 미지정 · 거의 매주(14/16주)</div>
+      <span class="chip kh">재고금액/재고보유일수 피드백 → SO실</span>
+    </div>
+  </div>
+
+  <!-- MONTHLY -->
+  <h2 class="sectitle"><span class="n">2</span>매월 반복 (일자 기준)</h2>
+  <p class="secdesc">전월 실적을 다음 달 특정 일자에 마감·제출하는 패턴. 관측된 실제 날짜(예: "6.3", "6/15")를 근거로 배치했습니다. 요일이 아닌 <b>매월 며칠</b> 기준입니다.</p>
+  <div class="cal-wrap">
+    <div class="cal">
+      <div class="dow">일</div><div class="dow">월</div><div class="dow">화</div><div class="dow">수</div><div class="dow">목</div><div class="dow">금</div><div class="dow">토</div>
+      <div class="cell empty"></div><div class="cell empty"></div>
+      <div class="cell hot"><div class="dnum">3</div>
+        <span class="chip kh">전월 결산(AMIS/TC) 완료</span>
+      </div>
+      <div class="cell"><div class="dnum">4</div></div>
+      <div class="cell"><div class="dnum">5</div></div>
+      <div class="cell"><div class="dnum">6</div></div>
+      <div class="cell"><div class="dnum">7</div></div>
+
+      <div class="cell"><div class="dnum">8</div></div>
+      <div class="cell"><div class="dnum">9</div></div>
+      <div class="cell"><div class="dnum">10</div></div>
+      <div class="cell hot"><div class="dnum">11</div>
+        <span class="chip jm">영업직 급여 지급</span>
+      </div>
+      <div class="cell hot"><div class="dnum">12</div>
+        <span class="chip jm">관리직 급여 지급</span>
+        <span class="chip kh">집단CFO실 월간관리보고 제출</span>
+      </div>
+      <div class="cell hot"><div class="dnum">13</div>
+        <span class="chip kh">집단CFO실 월간관리보고 제출</span>
+      </div>
+      <div class="cell"><div class="dnum">14</div></div>
+
+      <div class="cell hot"><div class="dnum">15</div>
+        <span class="chip jm">전월분 세금 납부</span>
+        <span class="chip kh">재고관리판/현금시드머니 제출</span>
+        <span class="chip kh">PKG↔AMIS 차이대사</span>
+      </div>
+      <div class="cell hot"><div class="dnum">16</div>
+        <span class="chip kh">재고관리판/현금시드머니 제출</span>
+        <span class="chip kh">PKG↔AMIS 차이대사</span>
+      </div>
+      <div class="cell"><div class="dnum">17</div></div>
+      <div class="cell"><div class="dnum">18</div></div>
+      <div class="cell"><div class="dnum">19</div></div>
+      <div class="cell hot"><div class="dnum">20</div>
+        <span class="chip se">수출세환급 신고 마감(전후)</span>
+      </div>
+      <div class="cell"><div class="dnum">21</div></div>
+
+      <div class="cell"><div class="dnum">22</div></div>
+      <div class="cell"><div class="dnum">23</div></div>
+      <div class="cell"><div class="dnum">24</div></div>
+      <div class="cell"><div class="dnum">25</div>
+        <span class="chip jm">한국 직원 급여 지급</span>
+      </div>
+      <div class="cell"><div class="dnum">26</div></div>
+      <div class="cell"><div class="dnum">27</div></div>
+      <div class="cell"><div class="dnum">28</div>
+        <span class="chip kh">제조원가 결산 완료</span>
+      </div>
+
+      <div class="cell"><div class="dnum">29</div>
+        <span class="chip kh">제조원가 결산 완료</span>
+      </div>
+      <div class="cell"><div class="dnum">30</div></div>
+      <div class="cell"><div class="dnum">31</div></div>
+      <div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div>
+    </div>
+  </div>
+
+  <div class="week-strip" style="margin-top:14px;grid-template-columns:1fr 1fr;">
+    <div class="day" style="min-height:auto;">
+      <div class="dname">날짜 비고정 · 매월 발생</div>
+      <span class="chip jm">은행대출 상환 / 차입 (만기 도래시마다, 월 2~4회)</span>
+      <span class="chip jm">은행대출·자금풀 이자 계상</span>
+    </div>
+    <div class="day" style="min-height:auto;">
+      <div class="dname">매월 초 (1~5일)</div>
+      <span class="chip se">부가세신고, 통계신고, 비무역지급 처리</span>
+    </div>
+  </div>
+
+  <!-- QUARTERLY / ANNUAL -->
+  <h2 class="sectitle"><span class="n">3</span>분기 · 연간 반복</h2>
+  <p class="secdesc">데이터가 확보된 기간은 <b>3월 말 ~ 7월 초</b>입니다. 아래 월 표시 중 진하게 칠해진 달만 실제 관측치이며, 나머지 달은 동일 주기가 이어질 것으로 추정만 가능합니다.</p>
+  <div class="qtl">
+    <div class="m">1월</div><div class="m">2월</div><div class="m obs">3월</div><div class="m obs">4월</div>
+    <div class="m obs">5월</div><div class="m obs">6월</div><div class="m obs">7월</div><div class="m">8월</div>
+    <div class="m">9월</div><div class="m">10월</div><div class="m">11월</div><div class="m">12월</div>
+  </div>
+  <div class="event-rows">
+    <div class="erow"><div class="span">분기 시작월 10일경</div><div class="desc"><b>[회계]</b> 분기 은행수신 데이터, 인화세/기업소득세 계산표, Q-PKG(지분도·출자증명서·Event List) 제출 — 4/10, 7/10 관측</div></div>
+    <div class="erow"><div class="span">분기 중순</div><div class="desc"><b>[회계]</b> GRIR 청산 — 6/18(2분기) 관측</div></div>
+    <div class="erow"><div class="span">3월 ~ 5월</div><div class="desc"><b>[회계]</b> 전년도 각 법인 감사보고서 확정 (PwC 의견 제출 → 초안 확인 → 최종 완료)</div></div>
+    <div class="erow"><div class="span">4월 중순</div><div class="desc"><b>[세무]</b> 전년도 수출세환급(出口退税) 신고 최종 마감 — 4/17~4/20 관측</div></div>
+    <div class="erow"><div class="span">4월 ~ 6월</div><div class="desc"><b>[세무]</b> 연간 정산(汇算清缴): 법인세 연간정산 + 외국인 개인소득세 연말정산 진행</div></div>
+    <div class="erow"><div class="span">5월 ~ 6월</div><div class="desc"><b>[세무]</b> 工商年报(공상연보) 공시 — 6/18 전체 완료 관측 (법정 마감 6/30)</div></div>
+  </div>
+
+  <div class="caveat">
+    이 캘린더는 각 항목이 실제로 실행된 회차 중 <b>날짜가 함께 기재된 것만</b> 근거로 배치했습니다. 날짜 표기가 없는 반복 업무는 "날짜 비고정" 칸으로 분리했고, 대출 상환·차입처럼 건별로 시점이 달라지는 항목은 특정일에 고정하지 않았습니다.
+  </div>
+
+  <footer>출처: CFO室周间计划_260710.xlsx — 전체 16개 시트("2026.03.27 周间计划" ~ "2026.07.10 周间计划")의 C열(本周工作总结) 전수 분석</footer>
+</div>
+
+</div>
+
+<div class="pg pg-leave" id="pg-leave">
 <div class="page">
   <header class="top">
     <div>
@@ -437,6 +820,24 @@
   renderDashboard();
   renderCalendar();
   renderLog();
+})();
+</script>
+
+</div>
+  </main>
+</div>
+
+<script>
+(function(){
+  document.querySelectorAll('.shell-nav-item').forEach(function(item){
+    item.addEventListener('click', function(){
+      document.querySelectorAll('.shell-nav-item').forEach(function(i){ i.classList.remove('active'); });
+      document.querySelectorAll('.pg').forEach(function(p){ p.classList.remove('active'); });
+      item.classList.add('active');
+      document.getElementById(item.dataset.target).classList.add('active');
+    });
+  });
+  document.getElementById('pg-weekly').classList.add('active');
 })();
 </script>
 </body>
