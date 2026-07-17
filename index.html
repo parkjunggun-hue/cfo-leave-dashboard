@@ -238,6 +238,13 @@
     return countCalendarDays(r.start, r.end);
   }
   function teamClass(t){ return t==='회계'?'kh': t==='자금'?'jm': t==='세무'?'se':'kh'; }
+  function todayStr(){
+    var d = new Date();
+    return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  }
+  function effectiveStatus(r){
+    return (r.status==='계획(예정)' && r.end<=todayStr()) ? '확정(실적)' : r.status;
+  }
   function employeeList(){
     var map = {};
     RECORDS.forEach(function(r){ map[r.name] = r.team; });
@@ -276,8 +283,8 @@
     });
 
     var totalUsed = rows.reduce(function(s,r){ return s+r.total; },0);
-    var confCount = RECORDS.filter(function(r){ return r.status==='확정(실적)'; }).length;
-    var planCount = RECORDS.filter(function(r){ return r.status==='계획(예정)'; }).length;
+    var confCount = RECORDS.filter(function(r){ return effectiveStatus(r)==='확정(실적)'; }).length;
+    var planCount = RECORDS.filter(function(r){ return effectiveStatus(r)==='계획(예정)'; }).length;
     var shortCount = rows.filter(function(r){
       var g = ENTITLEMENTS[r.name];
       return g!==undefined && (g-r.total)<0;
@@ -343,9 +350,10 @@
       var html = '<div class="dnum">'+day+'</div>';
       var shown = todays.slice(0,4);
       shown.forEach(function(r){
-        var planCls = r.status==='계획(예정)' ? ' plan' : '';
+        var estatus = effectiveStatus(r);
+        var planCls = estatus==='계획(예정)' ? ' plan' : '';
         var halfTag = r.half!=='전일' ? (r.half==='오전반차'?'(오전)':'(오후)') : '';
-        html += '<span class="chip '+teamClass(r.team)+planCls+'" title="'+r.name+' · '+r.type+' · '+r.status+'">'+r.name+halfTag+'</span>';
+        html += '<span class="chip '+teamClass(r.team)+planCls+'" title="'+r.name+' · '+r.type+' · '+estatus+'">'+r.name+halfTag+'</span>';
       });
       if(todays.length>shown.length){ html += '<div class="more">+'+(todays.length-shown.length)+'명 더보기</div>'; }
       cell.innerHTML = html;
@@ -378,7 +386,7 @@
       if(search && r.name.indexOf(search)===-1) return false;
       if(team && r.team!==team) return false;
       if(type && r.type!==type) return false;
-      if(status && r.status!==status) return false;
+      if(status && effectiveStatus(r)!==status) return false;
       if(month && r.start.substring(5,7)!==month) return false;
       return true;
     });
@@ -398,7 +406,8 @@
     }
     recs.forEach(function(r){
       var period = r.start===r.end ? r.start : (r.start+' ~ '+r.end);
-      var statusCls = r.status==='계획(예정)' ? 'plan' : 'conf';
+      var estatus = effectiveStatus(r);
+      var statusCls = estatus==='계획(예정)' ? 'plan' : 'conf';
       var tr = document.createElement('tr');
       tr.innerHTML =
         '<td><span class="pill '+teamClass(r.team)+'">'+r.team+'</span></td>'+
@@ -406,7 +415,7 @@
         '<td>'+period+'</td>'+
         '<td>'+r.half+'</td>'+
         '<td>'+r.type+'</td>'+
-        '<td><span class="pill '+statusCls+'">'+r.status+'</span></td>'+
+        '<td><span class="pill '+statusCls+'">'+estatus+'</span></td>'+
         '<td>'+r.days.toFixed(1)+'</td>'+
         '<td style="color:var(--text-muted);font-size:12px">'+(r.note||'')+'</td>';
       tbody.appendChild(tr);
