@@ -643,9 +643,10 @@ body{
   function effectiveStatus(r){
     return (r.status==='계획(예정)' && r.end<=todayStr()) ? '확정(실적)' : r.status;
   }
+  var RESIGNED = ['崔婧','方梦怡','陈扬'];
   function employeeList(){
     var map = {};
-    RECORDS.forEach(function(r){ map[r.name] = r.team; });
+    RECORDS.forEach(function(r){ if(RESIGNED.indexOf(r.name)===-1) map[r.name] = r.team; });
     return Object.keys(map).sort().map(function(n){ return {name:n, team:map[n]}; });
   }
 
