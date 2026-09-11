@@ -190,6 +190,16 @@ body{
   }.pg-cal footer{margin-top:20px;font-size:12px;color:var(--text-muted);}
 
 
+  /* ---- 자금 캘린더 ---- */
+.pg-cash .page{max-width:1100px;margin:0 auto;}.pg-cash header.top{margin-bottom:22px;}.pg-cash .eyebrow{font-size:12.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:8px;}.pg-cash h1{font-size:26px;font-weight:800;margin:0 0 6px;letter-spacing:-0.01em;text-wrap:balance;}.pg-cash .sub{color:var(--text-muted);font-size:14px;}.pg-cash .sub b{color:var(--text);font-weight:600;}.pg-cash .note{
+    margin-top:16px;background:var(--accent-soft);border:1px solid var(--border);
+    border-left:3px solid var(--accent);border-radius:8px;padding:12px 14px;font-size:13px;color:var(--text);
+  }.pg-cash .note b{color:var(--accent);}.pg-cash .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0 30px;}.pg-cash .stat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;box-shadow:var(--shadow);}.pg-cash .stat .n{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}.pg-cash .stat .l{font-size:12px;color:var(--text-muted);margin-top:2px;}.pg-cash h2.sectitle{font-size:16px;font-weight:800;margin:34px 0 4px;display:flex;align-items:center;gap:8px;}.pg-cash h2.sectitle .n{width:23px;height:23px;border-radius:6px;background:var(--accent);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12px;}.pg-cash p.secdesc{font-size:13px;color:var(--text-muted);margin:0 0 16px;}.pg-cash .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px;}.pg-cash .card-head{padding:12px 16px;border-bottom:1px solid var(--border);background:var(--surface-2);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}.pg-cash .legend{display:flex;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--text-muted);}.pg-cash .chip-sample{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:999px;}.pg-cash .chip-sample.pay{background:var(--info-soft);color:var(--info);}.pg-cash .chip-sample.prod{background:var(--warning-soft);color:var(--warning);}.pg-cash .chip-sample.draw{background:var(--success-soft);color:var(--success);}.pg-cash .chip-sample.repay{background:var(--danger-soft);color:var(--danger);}.pg-cash .chip-sample.interest{background:var(--accent-soft);color:var(--accent);}.pg-cash .cal-nav{display:flex;align-items:center;gap:10px;}.pg-cash .cal-nav button{background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:5px 11px;font-size:13px;cursor:pointer;color:var(--text);}.pg-cash .cal-nav button:hover{border-color:var(--accent);color:var(--accent);}.pg-cash .cal-label{font-weight:800;font-size:14px;min-width:88px;text-align:center;}.pg-cash .cal-wrap{overflow-x:auto;padding:14px;}.pg-cash .cal{display:grid;grid-template-columns:repeat(7,minmax(118px,1fr));gap:7px;min-width:860px;}.pg-cash .cal .dow{font-size:10.5px;font-weight:700;color:var(--text-muted);text-align:center;padding-bottom:2px;text-transform:uppercase;}.pg-cash .cal .cell{background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:6px;min-height:64px;}.pg-cash .cal .cell.empty{background:transparent;border:none;}.pg-cash .cal .cell .dnum{font-size:11.5px;font-weight:800;color:var(--text-muted);font-variant-numeric:tabular-nums;margin-bottom:3px;}.pg-cash .cal .chip{display:block;font-size:10.5px;font-weight:700;padding:2px 6px;border-radius:5px;margin-bottom:3px;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}.pg-cash .cal .chip.pay{background:var(--info-soft);color:var(--info);}.pg-cash .cal .chip.prod{background:var(--warning-soft);color:var(--warning);}.pg-cash .cal .chip.draw{background:var(--success-soft);color:var(--success);}.pg-cash .cal .chip.repay{background:var(--danger-soft);color:var(--danger);}.pg-cash .cal .chip.interest{background:var(--accent-soft);color:var(--accent);}.pg-cash .tablewrap{overflow-x:auto;}.pg-cash table{width:100%;border-collapse:collapse;font-size:13px;}.pg-cash thead th{text-align:left;font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:8px;border-bottom:1px solid var(--border);white-space:nowrap;}.pg-cash tbody td{padding:9px 8px;border-bottom:1px solid var(--border);vertical-align:top;font-variant-numeric:tabular-nums;white-space:nowrap;}.pg-cash tbody tr:last-child td{border-bottom:none;}.pg-cash tr.totalrow td{font-weight:800;background:var(--surface-2);}.pg-cash .planval{color:var(--text-muted);font-size:12px;}.pg-cash .actval{font-size:12px;font-weight:700;margin-top:2px;}.pg-cash .actval.match{color:var(--success);}.pg-cash .actval.partial{color:var(--warning);}.pg-cash footer{margin-top:26px;font-size:12px;color:var(--text-muted);}.pg-cash footer p{margin:4px 0;}
+
+  @media(max-width:760px){.pg-cash .stats{grid-template-columns:repeat(2,1fr);}
+  }
+
+
   /* ---- 근태·휴가 현황 ---- */
 .pg-leave .page{max-width:1100px;margin:0 auto;}.pg-leave header.top{margin-bottom:18px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;}.pg-leave .eyebrow{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:6px;}.pg-leave h1{font-size:23px;font-weight:800;margin:0 0 4px;letter-spacing:-.01em;}.pg-leave .sub{color:var(--text-muted);font-size:13.5px;}.pg-leave .snapshot{
     background:var(--surface);border:1px solid var(--border);border-radius:9px;
@@ -285,7 +295,7 @@ body{
 <div class="shell">
   <aside class="shell-sidebar">
     <div class="shell-brand">CFO室 대시보드</div>
-    <div class="shell-brand-sub">7개 리포트 통합 조회</div>
+    <div class="shell-brand-sub">8개 리포트 통합 조회</div>
     <nav class="shell-nav">
       <div class="shell-nav-item active" data-target="pg-weekly">
         <span class="dot"></span>
@@ -294,6 +304,10 @@ body{
       <div class="shell-nav-item" data-target="pg-cal">
         <span class="dot"></span>
         <span class="txt"><span class="lbl">정기 반복 업무 캘린더</span><span class="dsc">매주·매월·분기 반복 일정</span></span>
+      </div>
+      <div class="shell-nav-item" data-target="pg-cash">
+        <span class="dot"></span>
+        <span class="txt"><span class="lbl">자금 캘린더</span><span class="dsc">일자별 출납·차입금 인출/상환 현황</span></span>
       </div>
       <div class="shell-nav-item" data-target="pg-leave">
         <span class="dot"></span>
@@ -640,6 +654,156 @@ body{
 
   <footer>출처: CFO室周间计划_260904.xlsx — 전체 24개 시트("2026.03.27 周间计划" ~ "2026.09.04 周间计划")의 C열(本周工作总结) 전수 분석</footer>
 </div>
+
+</div>
+
+<div class="pg pg-cash" id="pg-cash">
+<div class="page">
+  <header class="top">
+    <div class="eyebrow">CFO室 资金日报 · 자금 캘린더</div>
+    <h1>언제 얼마가 나가고, 언제 얼마를 빌리고 갚았나</h1>
+    <div class="sub">대상 기간 <b>2026.03.01 ~ 09.11</b> · 자금일보(China_BG_cash_daily_Fashion_report) 및 차입금 현황(Loan status) 반영 · 衣念+衣恋+宇旭+迪柯 4개 법인 합산</div>
+    <div class="note">
+      <b>"판관비 결제"는 자금일보에 급여만 별도로 분리된 라인이 없어</b>, 판관비(判管费 — 법인세·부가세 등 세금 항목 포함) 전체 금액을 그대로 표시한 것입니다. 급여만의 금액이 아니라는 점 참고 부탁드립니다.
+      <b>차입금 캘린더는 은행명 구분 없이 법인 전체 합계</b>로 표시했습니다.
+      <b>모든 금액 단위는 万元(1만 위안)이며, 소수점 이하는 절사(버림)</b>했습니다.
+    </div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="n">66,249</div><div class="l">누적 생산결제 (万元)</div></div>
+    <div class="stat"><div class="n">84,977</div><div class="l">누적 판관비 결제 (万元)</div></div>
+    <div class="stat"><div class="n">37,599</div><div class="l">누적 차입금 인출 (万元)</div></div>
+    <div class="stat"><div class="n">52,942</div><div class="l">누적 차입금 상환 (万元)</div></div>
+  </div>
+
+  <h2 class="sectitle"><span class="n">1</span>자금 출납 캘린더 — 판관비 결제·생산결제</h2>
+  <p class="secdesc">단위: 万元(1만 위안), 소수점 이하 절사. 그날 실제 발생한 지출 금액을 날짜 칸에 그대로 표시했습니다.</p>
+  <div class="card">
+    <div class="card-head">
+      <div class="legend"><span class="chip-sample pay">판관비 결제</span><span class="chip-sample prod">생산결제</span></div>
+      <div class="cal-nav"><button id="outPrev">◀</button><div class="cal-label" id="outLabel"></div><button id="outNext">▶</button></div>
+    </div>
+    <div class="cal-wrap"><div class="cal" id="outCal"></div></div>
+  </div>
+
+  <h2 class="sectitle"><span class="n">2</span>차입금 캘린더 — 인출·상환·이자비용 (실행)</h2>
+  <p class="secdesc">단위: 万元(1만 위안), 소수점 이하 절사. 은행 구분 없는 법인 합계 기준 실행(발생일) 실적입니다.</p>
+  <div class="card">
+    <div class="card-head">
+      <div class="legend"><span class="chip-sample draw">인출</span><span class="chip-sample repay">상환</span><span class="chip-sample interest">이자비용</span></div>
+      <div class="cal-nav"><button id="borPrev">◀</button><div class="cal-label" id="borLabel"></div><button id="borNext">▶</button></div>
+    </div>
+    <div class="cal-wrap"><div class="cal" id="borCal"></div></div>
+  </div>
+
+  <h2 class="sectitle"><span class="n">3</span>차입금 상환 계획 대비 실행 — 법인별·월별</h2>
+  <p class="secdesc">단위: 万元(1만 위안), 소수점 이하 절사. 26.08은 2026.07.30 시점 계획, 26.09~는 2026.08.31 시점 계획(가장 최근 자료) 기준입니다. 26.08(경과월)·26.09(진행중, 09.11까지 실적)만 계획 대비 실행을 함께 표시했고, 그 이후 월은 계획만 존재합니다. 은행별 세부내역은 생략했습니다.</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>법인</th><th>26.08</th><th>26.09 (9.11까지)</th><th>26.10</th><th>26.11</th><th>26.12</th><th>27.01</th><th>27.02</th><th>27.02 이후</th><th>총계(계획)</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>F201-衣念</td>
+          <td><div class="planval">계획 4500</div><div class="actval match">실행 4500 ✓</div></td>
+          <td><div class="planval">계획 2634</div><div class="actval partial">실행 1134</div></td>
+          <td>-</td><td>-</td><td>5012</td><td>1400</td><td>-</td><td>84492</td><td><b>93539</b></td>
+        </tr>
+        <tr>
+          <td>F202-衣恋</td>
+          <td><div class="planval">계획 0</div><div class="actval match">실행 0 ✓</div></td>
+          <td><div class="planval">계획 2599</div><div class="actval partial">실행 249</div></td>
+          <td>-</td><td>-</td><td>2326</td><td>-</td><td>-</td><td>11422</td><td><b>16348</b></td>
+        </tr>
+        <tr>
+          <td>F203-宇旭</td>
+          <td><div class="planval">계획 3000</div><div class="actval match">실행 3000 ✓</div></td>
+          <td><div class="planval">계획 2585</div><div class="actval partial">실행 585</div></td>
+          <td>0</td><td>0</td><td>890</td><td>-</td><td>-</td><td>11400</td><td><b>14875</b></td>
+        </tr>
+        <tr class="totalrow">
+          <td>합계</td>
+          <td><div class="planval">계획 7500</div><div class="actval match">실행 7500 ✓</div></td>
+          <td><div class="planval">계획 7820</div><div class="actval partial">실행 1970</div></td>
+          <td>0</td><td>0</td><td>8229</td><td>-</td><td>-</td><td>107314</td><td><b>124764</b></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="secdesc" style="margin-top:8px;">26.08은 계획과 실행이 3개 법인 모두 정확히 일치했습니다. 26.09는 09.11 기준 계획(7820)의 25%(1970)가 집행됐습니다.</p>
+
+  <footer>
+    <p>산정 기준: China_BG_cash_daily_Fashion_report(衣念+衣恋+宇旭+迪柯 합산 Total/법인별 시트)의 일자별 컬럼을 그대로 사용했습니다. 판관비 결제는 자금일보에 급여 전용 항목이 없어 판관비(법인세·부가세 등 세금 항목 포함) 전체를 그대로 표시한 것입니다. 차입금 인출·상환·이자비용은 은행 구분 없는 법인 합계 기준 실행 실적입니다. 상환계획은 Loan_status_2026_merged.xlsx의 2026.07.30 시점(26.08 계획용)과 2026.08.31 시점(26.09~ 계획용) 스냅샷을 사용했습니다.</p>
+    <p>출처: China_BG_cash_daily_Fashion_report_2026_merged.xlsx · Loan_status_2026_merged.xlsx (D:\클로드코드\자금일보)</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var OUTFLOW = [["2026-03-02","판관비 결제",118],["2026-03-04","판관비 결제",3],["2026-03-05","판관비 결제",0],["2026-03-06","생산결제",1411],["2026-03-06","판관비 결제",1122],["2026-03-10","생산결제",3],["2026-03-10","판관비 결제",0],["2026-03-11","생산결제",50],["2026-03-11","판관비 결제",4441],["2026-03-12","생산결제",1982],["2026-03-12","판관비 결제",0],["2026-03-13","생산결제",4897],["2026-03-13","판관비 결제",1591],["2026-03-16","판관비 결제",2323],["2026-03-18","판관비 결제",31],["2026-03-19","판관비 결제",7328],["2026-03-20","생산결제",1580],["2026-03-20","판관비 결제",857],["2026-03-23","판관비 결제",268],["2026-03-25","판관비 결제",251],["2026-03-26","판관비 결제",0],["2026-03-27","생산결제",1929],["2026-03-27","판관비 결제",864],["2026-03-30","생산결제",1174],["2026-03-30","판관비 결제",25],["2026-03-31","생산결제",21],["2026-03-31","판관비 결제",1],["2026-04-01","판관비 결제",13],["2026-04-03","생산결제",1285],["2026-04-03","판관비 결제",1792],["2026-04-07","판관비 결제",57],["2026-04-08","생산결제",19],["2026-04-08","판관비 결제",274],["2026-04-09","판관비 결제",280],["2026-04-10","생산결제",1313],["2026-04-10","판관비 결제",652],["2026-04-13","판관비 결제",3645],["2026-04-15","생산결제",942],["2026-04-15","판관비 결제",14],["2026-04-17","생산결제",1282],["2026-04-17","판관비 결제",558],["2026-04-20","판관비 결제",2700],["2026-04-21","생산결제",350],["2026-04-21","판관비 결제",328],["2026-04-22","판관비 결제",138],["2026-04-23","생산결제",334],["2026-04-23","판관비 결제",151],["2026-04-24","생산결제",1188],["2026-04-24","판관비 결제",688],["2026-04-27","판관비 결제",0],["2026-04-28","생산결제",29],["2026-04-28","판관비 결제",0],["2026-04-29","생산결제",109],["2026-04-29","판관비 결제",66],["2026-04-30","생산결제",4246],["2026-04-30","판관비 결제",686],["2026-05-06","판관비 결제",83],["2026-05-07","판관비 결제",0],["2026-05-08","생산결제",84],["2026-05-08","판관비 결제",9],["2026-05-09","생산결제",1358],["2026-05-09","판관비 결제",927],["2026-05-11","생산결제",41],["2026-05-11","판관비 결제",46],["2026-05-12","판관비 결제",425],["2026-05-13","판관비 결제",3994],["2026-05-15","생산결제",4928],["2026-05-15","판관비 결제",1039],["2026-05-18","판관비 결제",210],["2026-05-20","판관비 결제",14],["2026-05-21","판관비 결제",244],["2026-05-22","생산결제",1660],["2026-05-22","판관비 결제",2045],["2026-05-25","판관비 결제",551],["2026-05-26","판관비 결제",0],["2026-05-27","판관비 결제",11],["2026-05-28","판관비 결제",42],["2026-05-29","생산결제",1554],["2026-05-29","판관비 결제",814],["2026-06-01","판관비 결제",2],["2026-06-02","생산결제",136],["2026-06-02","판관비 결제",0],["2026-06-03","판관비 결제",3],["2026-06-05","생산결제",1314],["2026-06-05","판관비 결제",970],["2026-06-08","판관비 결제",45],["2026-06-09","판관비 결제",0],["2026-06-10","생산결제",2247],["2026-06-10","판관비 결제",336],["2026-06-11","판관비 결제",3201],["2026-06-12","생산결제",1294],["2026-06-12","판관비 결제",1590],["2026-06-15","생산결제",168],["2026-06-15","판관비 결제",1887],["2026-06-17","생산결제",8],["2026-06-17","판관비 결제",28],["2026-06-18","생산결제",1632],["2026-06-18","판관비 결제",885],["2026-06-22","생산결제",13],["2026-06-22","판관비 결제",122],["2026-06-23","판관비 결제",178],["2026-06-24","판관비 결제",9151],["2026-06-25","판관비 결제",241],["2026-06-26","생산결제",1440],["2026-06-26","판관비 결제",610],["2026-06-30","생산결제",91],["2026-06-30","판관비 결제",0],["2026-07-01","판관비 결제",7],["2026-07-02","판관비 결제",0],["2026-07-03","생산결제",1461],["2026-07-03","판관비 결제",683],["2026-07-06","판관비 결제",301],["2026-07-07","판관비 결제",0],["2026-07-08","판관비 결제",23],["2026-07-09","판관비 결제",271],["2026-07-10","생산결제",1687],["2026-07-10","판관비 결제",640],["2026-07-13","판관비 결제",3707],["2026-07-15","생산결제",645],["2026-07-15","판관비 결제",1834],["2026-07-16","생산결제",12],["2026-07-17","생산결제",1443],["2026-07-17","판관비 결제",953],["2026-07-20","판관비 결제",5],["2026-07-22","판관비 결제",294],["2026-07-23","판관비 결제",409],["2026-07-24","생산결제",1487],["2026-07-24","판관비 결제",635],["2026-07-27","판관비 결제",3],["2026-07-29","판관비 결제",7],["2026-07-30","생산결제",1391],["2026-07-31","생산결제",1606],["2026-07-31","판관비 결제",399],["2026-08-03","판관비 결제",2],["2026-08-05","판관비 결제",9],["2026-08-06","판관비 결제",412],["2026-08-07","생산결제",1659],["2026-08-07","판관비 결제",739],["2026-08-10","생산결제",66],["2026-08-10","판관비 결제",0],["2026-08-11","판관비 결제",132],["2026-08-12","생산결제",191],["2026-08-12","판관비 결제",2762],["2026-08-13","판관비 결제",693],["2026-08-14","생산결제",3490],["2026-08-14","판관비 결제",637],["2026-08-17","생산결제",54],["2026-08-17","판관비 결제",744],["2026-08-19","판관비 결제",3],["2026-08-20","판관비 결제",5],["2026-08-21","생산결제",2369],["2026-08-21","판관비 결제",1289],["2026-08-24","판관비 결제",72],["2026-08-25","판관비 결제",215],["2026-08-26","생산결제",50],["2026-08-26","판관비 결제",15],["2026-08-28","생산결제",3022],["2026-08-28","판관비 결제",626],["2026-08-31","판관비 결제",1],["2026-09-01","생산결제",21],["2026-09-01","판관비 결제",1],["2026-09-02","판관비 결제",1],["2026-09-04","생산결제",1941],["2026-09-04","판관비 결제",772],["2026-09-07","판관비 결제",78],["2026-09-08","판관비 결제",0],["2026-09-09","판관비 결제",305],["2026-09-11","생산결제",1516],["2026-09-11","판관비 결제",4276]];
+  var BORROW = [["2026-03-10","상환",5042],["2026-03-10","이자비용",38],["2026-03-12","인출",1970],["2026-03-23","이자비용",1376],["2026-04-21","이자비용",3],["2026-04-23","상환",2400],["2026-04-23","이자비용",6],["2026-04-28","인출",5000],["2026-04-30","상환",2332],["2026-04-30","이자비용",31],["2026-05-08","상환",9100],["2026-05-08","이자비용",35],["2026-05-13","인출",9100],["2026-05-21","이자비용",3],["2026-06-04","상환",3400],["2026-06-04","이자비용",20],["2026-06-05","상환",100],["2026-06-09","인출",3400],["2026-06-09","상환",5000],["2026-06-10","인출",2129],["2026-06-18","상환",2099],["2026-06-18","이자비용",28],["2026-06-22","이자비용",1340],["2026-06-23","상환",2577],["2026-06-23","이자비용",33],["2026-07-09","상환",10500],["2026-07-09","이자비용",15],["2026-07-10","인출",7000],["2026-07-13","인출",4500],["2026-07-13","상환",150],["2026-07-21","상환",770],["2026-07-21","이자비용",1],["2026-08-06","상환",4500],["2026-08-06","이자비용",16],["2026-08-12","인출",4500],["2026-08-13","상환",3000],["2026-08-13","이자비용",14],["2026-08-21","이자비용",3],["2026-09-08","상환",1970],["2026-09-08","이자비용",27]];
+
+  var CAT_CLASS = {'판관비 결제':'pay','생산결제':'prod','인출':'draw','상환':'repay','이자비용':'interest'};
+
+  function buildIndex(records){
+    var idx = {};
+    records.forEach(function(r){
+      var d = r[0];
+      if(!idx[d]) idx[d] = [];
+      idx[d].push({cat:r[1], amt:r[2]});
+    });
+    return idx;
+  }
+  var OUT_IDX = buildIndex(OUTFLOW);
+  var BOR_IDX = buildIndex(BORROW);
+
+  var DOW = ['일','월','화','수','목','금','토'];
+
+  function makeCalendar(calId, labelId, prevId, nextId, index, year, month){
+    var state = {year:year, month:month};
+    function render(){
+      document.getElementById(labelId).textContent = state.year+'년 '+state.month+'월';
+      var grid = document.getElementById(calId);
+      grid.innerHTML = '';
+      DOW.forEach(function(d){ var e=document.createElement('div'); e.className='dow'; e.textContent=d; grid.appendChild(e); });
+
+      var first = new Date(state.year, state.month-1, 1);
+      var startDow = first.getDay();
+      var daysInMonth = new Date(state.year, state.month, 0).getDate();
+
+      for(var i=0;i<startDow;i++){ var e=document.createElement('div'); e.className='cell empty'; grid.appendChild(e); }
+      for(var day=1; day<=daysInMonth; day++){
+        var mm = String(state.month).padStart(2,'0');
+        var dd = String(day).padStart(2,'0');
+        var dateStr = state.year+'-'+mm+'-'+dd;
+        var entries = index[dateStr] || [];
+        var cell = document.createElement('div'); cell.className='cell';
+        var html = '<div class="dnum">'+day+'</div>';
+        entries.forEach(function(e){
+          html += '<span class="chip '+CAT_CLASS[e.cat]+'">'+e.cat+' '+e.amt+'</span>';
+        });
+        cell.innerHTML = html;
+        grid.appendChild(cell);
+      }
+      var totalCells = startDow + daysInMonth;
+      var trailing = (7 - (totalCells % 7)) % 7;
+      for(var j=0;j<trailing;j++){ var e2=document.createElement('div'); e2.className='cell empty'; grid.appendChild(e2); }
+    }
+    document.getElementById(prevId).addEventListener('click', function(){
+      state.month--; if(state.month<1){ state.month=12; state.year--; }
+      render();
+    });
+    document.getElementById(nextId).addEventListener('click', function(){
+      state.month++; if(state.month>12){ state.month=1; state.year++; }
+      render();
+    });
+    render();
+  }
+
+  makeCalendar('outCal','outLabel','outPrev','outNext', OUT_IDX, 2026, 9);
+  makeCalendar('borCal','borLabel','borPrev','borNext', BOR_IDX, 2026, 9);
+})();
+</script>
 
 </div>
 
