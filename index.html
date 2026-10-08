@@ -187,7 +187,7 @@ body{
   }.pg-cal .erow .span{font-size:12px;font-weight:700;color:var(--text-muted);white-space:nowrap;}.pg-cal .erow .desc{font-size:13.5px;}.pg-cal .erow .desc b{color:var(--text);}.pg-cal .caveat{
     margin-top:30px;background:var(--surface-2);border:1px solid var(--border);
     border-left:3px solid var(--accent);border-radius:8px;padding:12px 14px;font-size:12.5px;color:var(--text-muted);
-  }.pg-cal footer{margin-top:20px;font-size:12px;color:var(--text-muted);}
+  }.pg-cal footer{margin-top:20px;font-size:12px;color:var(--text-muted);}.pg-cal .dot.tr{background:var(--info,#6547b3);}.pg-cal .chip.tr{background:var(--info-soft,#f0ecfa);color:var(--info,#6547b3);}
 
 
   /* ---- 자금 캘린더 ---- */
@@ -508,24 +508,27 @@ body{
 <div class="pg pg-cal" id="pg-cal">
 <div class="page">
   <header>
-    <div class="eyebrow">CFO室 周间计划 · 24주 전체 시트 분석</div>
+    <div class="eyebrow">CFO室 周间计划 · 28주 전체 시트 분석</div>
     <h1>정기적으로 반복되는 업무 캘린더</h1>
-    <div class="sub">2026.03.27 ~ 2026.09.04 사이 <b>24개 주간 시트</b>(누적 22주 + 260828·260904 신규 2주)의 실제 수행 기록(本周)을 전부 모아, 매주 · 매월 · 매분기/연간 단위로 반복되는 패턴만 추렸습니다.</div>
+    <div class="sub">2026.03.27 ~ 2026.09.28 사이 <b>28개 주간 시트</b>의 실제 수행 기록(本周, 1,157건)을 전부 모아, 매주 · 매월 · 매분기/연간 단위로 반복되는 패턴만 추렸습니다. 무역팀은 08.14 시트부터 합류해 8주치만 반영했습니다.</div>
     <div class="legend">
       <span><i class="dot kh"></i>会计(회계)</span>
       <span><i class="dot jm"></i>资金(자금)</span>
       <span><i class="dot se"></i>税务(세무)</span>
+      <span><i class="dot tr"></i>贸易(무역)</span>
     </div>
   </header>
 
   <!-- WEEKLY -->
   <h2 class="sectitle"><span class="n">1</span>매주 반복</h2>
-  <p class="secdesc">24주 전체에서 예외 없이 매주 등장한 업무. 요일이 명시된 것은 해당 요일에 배치.</p>
+  <p class="secdesc">관측 기간 거의 매주 등장한 업무. 요일이 명시된 것은 해당 요일에 배치했습니다. 괄호는 등장한 시트 수입니다.</p>
   <div class="week-strip">
     <div class="day"><div class="dname">월요일</div>
-      <span class="chip kh">LCM자료 제출 (周一中午前)</span>
+      <span class="chip kh">LCM자료 제출 (周一中午前) · 21/27</span>
     </div>
     <div class="day"><div class="dname">화요일</div>
+      <span class="chip kh">면·부자재 소진관리 정례회의 (每周二 15:00, 9월~)</span>
+      <span class="chip kh faint">월 업적예측 집단 제출 (周二中午, 월말·월초 주)</span>
     </div>
     <div class="day"><div class="dname">수요일</div>
     </div>
@@ -534,120 +537,147 @@ body{
     <div class="day"><div class="dname">금요일</div>
     </div>
   </div>
-  <div class="week-strip" style="margin-top:10px;grid-template-columns:1fr 1fr;">
+  <div class="week-strip" style="margin-top:10px;grid-template-columns:1fr 1fr 1fr;">
     <div class="day" style="min-height:auto;">
-      <div class="dname">요일 미지정 · 매주 반복</div>
+      <div class="dname">요일 미지정 · 매주 (28/28)</div>
       <span class="chip jm">매주 지급예산 확인 (每周付款预算的确认)</span>
       <span class="chip jm">지사·본부 매주 지급 (支社&amp;总部每周付款)</span>
     </div>
     <div class="day" style="min-height:auto;">
-      <div class="dname">요일 미지정 · 거의 매주(09.04주 포함 계속 등장)</div>
-      <span class="chip kh">재고금액/재고보유일수 피드백 → SO실</span>
+      <div class="dname">요일 미지정 · 거의 매주</div>
+      <span class="chip kh">재고금액/재고보유일수/현금산출 피드백 → SO실 (25/27)</span>
+      <span class="chip se">출구환급(出口退税) 配单·자료 정리 (25/28)</span>
+    </div>
+    <div class="day" style="min-height:auto;">
+      <div class="dname">요일 미지정 · 매주 (무역 8/8)</div>
+      <span class="chip tr">수입 선적·통관·물류입고 / 수출 선적</span>
+      <span class="chip tr">주간 정시 선적·입항·입고율 보고 (09.11~ 매주)</span>
     </div>
   </div>
 
   <!-- MONTHLY -->
   <h2 class="sectitle"><span class="n">2</span>매월 반복 (일자 기준)</h2>
-  <p class="secdesc">전월 실적을 다음 달 특정 일자에 마감·제출하는 패턴. 관측된 실제 날짜(예: "6.3", "6/15")를 근거로 배치했습니다. 요일이 아닌 <b>매월 며칠</b> 기준입니다.</p>
+  <p class="secdesc">전월 실적을 다음 달 특정 일자에 마감·제출하는 패턴. 관측된 실제 날짜(예: "6/15", "9.16")를 근거로 배치했고, 괄호 안은 근거가 된 관측일입니다. 요일이 아닌 <b>매월 며칠</b> 기준이며 휴일에 따라 하루 이틀 밀립니다.</p>
   <div class="cal-wrap">
     <div class="cal">
       <div class="dow">일</div><div class="dow">월</div><div class="dow">화</div><div class="dow">수</div><div class="dow">목</div><div class="dow">금</div><div class="dow">토</div>
       <div class="cell empty"></div><div class="cell empty"></div>
+      <div class="cell hot"><div class="dnum">1</div>
+        <span class="chip se">附加税·房产税 预提 (8/3, 9/1)</span>
+      </div>
+      <div class="cell hot"><div class="dnum">2</div>
+        <span class="chip se">증치세 계산표 작성·확인</span>
+      </div>
       <div class="cell hot"><div class="dnum">3</div>
-        <span class="chip kh">전월 결산(AMIS/TC) 완료</span>
+        <span class="chip kh">전월 결산(AMIS/TC) 완료 (10월은 연휴로 10.9)</span>
       </div>
       <div class="cell"><div class="dnum">4</div></div>
       <div class="cell"><div class="dnum">5</div></div>
+
       <div class="cell"><div class="dnum">6</div></div>
       <div class="cell"><div class="dnum">7</div></div>
-
       <div class="cell"><div class="dnum">8</div></div>
       <div class="cell"><div class="dnum">9</div></div>
-      <div class="cell"><div class="dnum">10</div></div>
+      <div class="cell hot"><div class="dnum">10</div>
+        <span class="chip kh">PRC 报表 완료 (7.9, 8.10, 9.10)</span>
+      </div>
       <div class="cell hot"><div class="dnum">11</div>
-        <span class="chip jm">영업직 급여 지급</span>
+        <span class="chip jm">영업직 급여 지급 (6/11, 8/12)</span>
       </div>
       <div class="cell hot"><div class="dnum">12</div>
-        <span class="chip jm">관리직 급여 지급</span>
-        <span class="chip kh">집단CFO실 월간관리보고 제출</span>
+        <span class="chip jm">관리직 급여 지급 (6/12, 8/13)</span>
+        <span class="chip kh">전월 PKG 완료 (5.13, 6.12, 8.12, 9.14)</span>
       </div>
-      <div class="cell hot"><div class="dnum">13</div>
-        <span class="chip kh">집단CFO실 월간관리보고 제출</span>
-      </div>
-      <div class="cell"><div class="dnum">14</div></div>
 
+      <div class="cell hot"><div class="dnum">13</div>
+        <span class="chip kh">집단CFO실 월간 관리식 보고 제출 (4.13, 5.14, 6.12)</span>
+      </div>
+      <div class="cell hot"><div class="dnum">14</div>
+        <span class="chip kh">재고관리판/현금시드머니 제출 (4.16, 5.14)</span>
+      </div>
       <div class="cell hot"><div class="dnum">15</div>
-        <span class="chip jm">전월분 세금 납부</span>
-        <span class="chip kh">재고관리판/현금시드머니 제출</span>
-        <span class="chip kh">PKG↔AMIS 차이대사</span>
+        <span class="chip jm">전월분 세금 납부 (6/15, 7/15, 8/17, 9/15)</span>
+        <span class="chip kh">ICT 대사 (9.15)</span>
       </div>
       <div class="cell hot"><div class="dnum">16</div>
-        <span class="chip kh">재고관리판/현금시드머니 제출</span>
-        <span class="chip kh">PKG↔AMIS 차이대사</span>
+        <span class="chip kh">PKG↔AMIS 차이대사 (5.15, 6.16, 8.14, 9.16)</span>
       </div>
       <div class="cell"><div class="dnum">17</div></div>
       <div class="cell"><div class="dnum">18</div></div>
       <div class="cell"><div class="dnum">19</div></div>
-      <div class="cell hot"><div class="dnum">20</div>
-        <span class="chip se">수출세환급 신고 마감(전후)</span>
-      </div>
+
+      <div class="cell"><div class="dnum">20</div></div>
       <div class="cell"><div class="dnum">21</div></div>
-
-      <div class="cell"><div class="dnum">22</div></div>
-      <div class="cell"><div class="dnum">23</div></div>
-      <div class="cell"><div class="dnum">24</div></div>
-      <div class="cell"><div class="dnum">25</div>
-        <span class="chip jm">한국 직원 급여 지급</span>
+      <div class="cell hot"><div class="dnum">22</div>
+        <span class="chip jm">非贸(비무역) 지급 (5/25, 6/22, 8/21, 9/22)</span>
       </div>
+      <div class="cell hot"><div class="dnum">23</div>
+        <span class="chip se">다음 달 출구환급 예보수 상보 (9/23 전)</span>
+      </div>
+      <div class="cell hot"><div class="dnum">24</div>
+        <span class="chip jm">한국 직원 급여 지급 (6/25, 7/24, 8/25, 9/24)</span>
+      </div>
+      <div class="cell"><div class="dnum">25</div></div>
       <div class="cell"><div class="dnum">26</div></div>
-      <div class="cell"><div class="dnum">27</div></div>
-      <div class="cell"><div class="dnum">28</div>
-        <span class="chip kh">제조원가 결산 완료</span>
-      </div>
 
-      <div class="cell"><div class="dnum">29</div>
-        <span class="chip kh">제조원가 결산 완료</span>
+      <div class="cell"><div class="dnum">27</div></div>
+      <div class="cell hot"><div class="dnum">28</div>
+        <span class="chip kh">제조원가 결산 완료 (4.29, 7.30, 8.28, 9.29)</span>
       </div>
+      <div class="cell"><div class="dnum">29</div></div>
       <div class="cell"><div class="dnum">30</div></div>
       <div class="cell"><div class="dnum">31</div></div>
-      <div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div><div class="cell empty"></div>
+      <div class="cell empty"></div><div class="cell empty"></div>
     </div>
   </div>
 
-  <div class="week-strip" style="margin-top:14px;grid-template-columns:1fr 1fr;">
+  <div class="week-strip" style="margin-top:14px;grid-template-columns:1fr 1fr 1fr;">
+    <div class="day" style="min-height:auto;">
+      <div class="dname">매월 첫 주 · 날짜 비고정</div>
+      <span class="chip kh">당월 FI 업적예측 → SO실</span>
+      <span class="chip kh">SPAO 당월 지급한도 공유</span>
+      <span class="chip kh">브랜드별 주주자본비용 공유</span>
+      <span class="chip kh">브랜드별 입고계획 확인 (6월~)</span>
+      <span class="chip se">전월 출구환급 신고</span>
+    </div>
+    <div class="day" style="min-height:auto;">
+      <div class="dname">매월 중순 · 날짜 비고정</div>
+      <span class="chip se">전월 소속기 각종 통계 신고·납세 통계표</span>
+      <span class="chip se">대·소법인 세금 예산 신청·扣税</span>
+    </div>
     <div class="day" style="min-height:auto;">
       <div class="dname">날짜 비고정 · 매월 발생</div>
       <span class="chip jm">은행대출 상환 / 차입 (만기 도래시마다, 월 2~4회)</span>
-      <span class="chip jm">은행대출·자금풀 이자 계상</span>
-    </div>
-    <div class="day" style="min-height:auto;">
-      <div class="dname">매월 초 (1~5일)</div>
-      <span class="chip se">부가세신고, 통계신고, 비무역지급 처리</span>
+      <span class="chip jm">월말 은행·자금풀·관계사 이자 계상</span>
+      <span class="chip kh">발票 처리 마감·1차 세금 대사 (월말)</span>
     </div>
   </div>
 
   <!-- QUARTERLY / ANNUAL -->
   <h2 class="sectitle"><span class="n">3</span>분기 · 연간 반복</h2>
-  <p class="secdesc">데이터가 확보된 기간은 <b>3월 말 ~ 7월 초</b>입니다. 아래 월 표시 중 진하게 칠해진 달만 실제 관측치이며, 나머지 달은 동일 주기가 이어질 것으로 추정만 가능합니다.</p>
+  <p class="secdesc">데이터가 확보된 기간은 <b>3월 말 ~ 9월 말</b>(2·3분기 전체)입니다. 진하게 칠해진 달만 실제 관측치이며, 나머지 달은 동일 주기가 이어질 것으로 추정만 가능합니다.</p>
   <div class="qtl">
     <div class="m">1월</div><div class="m">2월</div><div class="m obs">3월</div><div class="m obs">4월</div>
-    <div class="m obs">5월</div><div class="m obs">6월</div><div class="m obs">7월</div><div class="m">8월</div>
-    <div class="m">9월</div><div class="m">10월</div><div class="m">11월</div><div class="m">12월</div>
+    <div class="m obs">5월</div><div class="m obs">6월</div><div class="m obs">7월</div><div class="m obs">8월</div>
+    <div class="m obs">9월</div><div class="m">10월</div><div class="m">11월</div><div class="m">12월</div>
   </div>
   <div class="event-rows">
-    <div class="erow"><div class="span">분기 시작월 10일경</div><div class="desc"><b>[회계]</b> 분기 은행수신 데이터, 인화세/기업소득세 계산표, Q-PKG(지분도·출자증명서·Event List) 제출 — 4/10, 7/10 관측</div></div>
-    <div class="erow"><div class="span">분기 중순</div><div class="desc"><b>[회계]</b> GRIR 청산 — 6/18(2분기) 관측</div></div>
-    <div class="erow"><div class="span">3월 ~ 5월</div><div class="desc"><b>[회계]</b> 전년도 각 법인 감사보고서 확정 (PwC 의견 제출 → 초안 확인 → 최종 완료)</div></div>
-    <div class="erow"><div class="span">4월 중순</div><div class="desc"><b>[세무]</b> 전년도 수출세환급(出口退税) 신고 최종 마감 — 4/17~4/20 관측</div></div>
-    <div class="erow"><div class="span">4월 ~ 6월</div><div class="desc"><b>[세무]</b> 연간 정산(汇算清缴): 법인세 연간정산 + 외국인 개인소득세 연말정산 진행</div></div>
-    <div class="erow"><div class="span">5월 ~ 6월</div><div class="desc"><b>[세무]</b> 工商年报(공상연보) 공시 — 6/18 전체 완료 관측 (법정 마감 6/30)</div></div>
+    <div class="erow"><div class="span">분기 말월 21일</div><div class="desc"><b>[자금]</b> 분기 은행대출 이자 일괄 차감 — 6/21(1,057万), 9/21(계획 1,100万·실제 1,419万) 관측. 다음 예상 12/21</div></div>
+    <div class="erow"><div class="span">분기 말 ~ 다음 달 10일경</div><div class="desc"><b>[회계]</b> Q-PKG(지분도·출자증명서·Event List) 작성·제출 — Q2는 7/10, Q3는 9/28 주 착수 관측</div></div>
+    <div class="erow"><div class="span">분기 첫 달 중순</div><div class="desc"><b>[세무]</b> 분기 기업소득세·인화세·房产税 신고 — 4/17(1분기), 7/10(2분기 계산표) 관측. 직전 분기 말에 소득세 수입↔증치세 수입 차이 사전 확인(6/26~7/3)</div></div>
+    <div class="erow"><div class="span">분기 말</div><div class="desc"><b>[회계]</b> GRIR 청산 — 6/18(2분기) 관측 (3분기는 미관측) · <b>[자금]</b> 대법인 간 분기 미수·미지급 정리(9/24 주)</div></div>
+    <div class="erow"><div class="span">3월 ~ 5월</div><div class="desc"><b>[회계]</b> 전년도 각 법인 감사보고서 확정 (PwC 의견 제출 → 초안 확인 → 5/29 최종 완료)</div></div>
+    <div class="erow"><div class="span">4월 중순</div><div class="desc"><b>[세무]</b> 전년도 수출세환급(出口退税) 신고 최종 마감 — 4/17 관측</div></div>
+    <div class="erow"><div class="span">4월 ~ 5월 / 6월 ~ 7월</div><div class="desc"><b>[세무]</b> 법인세 연간정산(汇算清缴) 4월 착수 → 5/29 전 법인 완료 / 외국인 개인소득세 연간정산 6/12 ~ 7/31(보충 신고 포함)</div></div>
+    <div class="erow"><div class="span">5월 ~ 6월</div><div class="desc"><b>[세무]</b> 工商公示(공상연보) 준비·입력 5/9 착수 → 6/18 전체 완료 (법정 마감 6/30)</div></div>
+    <div class="erow"><div class="span">8월 ~ 9월</div><div class="desc"><b>[회계]</b> 차년도 감사 준비 — 감사일정 협의(8/21) → 내부통제 인터뷰(9/16~18) → 감사비 협상(9월). 예비감사는 11월 예정</div></div>
   </div>
 
   <div class="caveat">
-    이 캘린더는 각 항목이 실제로 실행된 회차 중 <b>날짜가 함께 기재된 것만</b> 근거로 배치했습니다. 날짜 표기가 없는 반복 업무는 "날짜 비고정" 칸으로 분리했고, 대출 상환·차입처럼 건별로 시점이 달라지는 항목은 특정일에 고정하지 않았습니다.
+    이 캘린더는 각 항목이 실제로 실행된 회차 중 <b>날짜가 함께 기재된 것만</b> 근거로 일자에 배치했습니다. 날짜 표기가 없는 반복 업무는 "날짜 비고정" 칸으로 분리했고, 대출 상환·차입처럼 건별로 시점이 달라지는 항목은 특정일에 고정하지 않았습니다. 24주 버전 대비 PRC 报表(10일)·非贸 지급(22일)·출구환급 예보(23일)·월초 附加税 预提(1일)·분기 이자 차감(21일)·무역팀 업무가 새로 추가됐고, 20일 "수출세환급 마감"은 매월이 아닌 연 1회(4월) 항목이라 분기·연간으로 옮겼습니다.
   </div>
 
-  <footer>출처: CFO室周间计划_260904.xlsx — 전체 24개 시트("2026.03.27 周间计划" ~ "2026.09.04 周间计划")의 C열(本周工作总结) 전수 분석</footer>
+  <footer>출처: CFO室周间计划_260930.xlsx — 전체 28개 시트("2026.03.27 周间计划" ~ "2026.09.28 周间计划")의 C열(本周工作总结) 1,157건 전수 분석</footer>
 </div>
 
 </div>
